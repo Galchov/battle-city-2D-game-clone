@@ -1,3 +1,4 @@
+from settings import TANK_IMAGE
 import pygame
 
 
@@ -8,7 +9,7 @@ class PlayerTank:
         self.y = y
         self.speed = speed
         self.direction = 'UP'
-        self.original_image = pygame.image.load('/home/zdravko/Programming_Workspace/battle_city/assets/images/pt.png')
+        self.original_image = pygame.image.load(TANK_IMAGE)
         self.image = pygame.transform.scale(self.original_image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -44,3 +45,5 @@ class PlayerTank:
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+
+print(TANK_IMAGE)
