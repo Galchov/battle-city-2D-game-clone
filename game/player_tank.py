@@ -18,7 +18,7 @@ class PlayerTank:
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.hitbox = (self.x - 1, self.y - 1, 52, 52)
-
+    
     def move(self, keys) -> None:
         if keys[pygame.K_UP]:
             self.y -= self.speed
