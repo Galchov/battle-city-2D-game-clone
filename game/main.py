@@ -1,4 +1,5 @@
 import pygame
+import random
 
 
 from player_tank import PlayerTank
@@ -15,9 +16,13 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Battle City")
 
 tank = PlayerTank(WIDTH // 2, HEIGHT // 2, 4)
-enemy_1 = EnemyTank(100, 100, 1)
-enemy_2 = EnemyTank(350, 100, 1)
-enemy_3 = EnemyTank(700, 100, 1)
+enemy_tanks = []
+
+for _ in range(5):
+    x = random.randint(1, 800)
+    y = random.randint(1, 100)
+    enemy_tank = EnemyTank(x, y, 1)
+    enemy_tanks.append(enemy_tank)
 
 running = True
 while running:
@@ -33,12 +38,9 @@ while running:
     tank.rotate()
     tank.draw(screen)
 
-    enemy_1.move()
-    enemy_1.draw(screen)
-    enemy_2.move()
-    enemy_2.draw(screen)
-    enemy_3.move()
-    enemy_3.draw(screen)
+    for t in enemy_tanks:
+        t.move()
+        t.draw(screen)
 
     pygame.display.flip()
     clock.tick(FPS)
