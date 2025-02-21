@@ -2,28 +2,36 @@ import pygame
 import random
 
 
-from player_tank import PlayerTank
-from enemy_tank import EnemyTank
+from player_tank_sprite import PlayerTank
+from enemy_tank_sprite import EnemyTank
 
 
 pygame.init()
-clock = pygame.time.Clock()
 
-WIDTH, HEIGHT = 800, 600
+# Frame rate
+clock = pygame.time.Clock()
 FPS = 60
 
+# Screen size parameters
+WIDTH = 800
+HEIGHT = 600
+
+# Create the game window
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Battle City")
 
-tank = PlayerTank(WIDTH // 2, HEIGHT // 2, 4)
-enemy_tanks = []
+player_tank_team = pygame.sprite.Group()
+enemy_tanks_team = pygame.sprite.Group()
 
-for _ in range(5):
-    x = random.randint(1, 800)
-    y = random.randint(1, 100)
-    enemy_tank = EnemyTank(x, y, 1)
-    enemy_tanks.append(enemy_tank)
+player_tank = PlayerTank(WIDTH // 2, HEIGHT // 2, 3)
+player_tank_team.add(player_tank)
 
+for _ in range(10):
+    x_axis = random.randint(100, 700)
+    tank_obj = EnemyTank(x_axis, 50, 1)
+    enemy_tanks_team.add(tank_obj)
+
+# Game loop
 running = True
 while running:
 
@@ -34,13 +42,13 @@ while running:
     screen.fill("dark grey")
 
     keys = pygame.key.get_pressed()
-    tank.move(keys)
-    tank.rotate()
-    tank.draw(screen)
+    player_tank.move(keys)
+    player_tank.rotate()
+    player_tank.hit_object(enemy_tanks_team)
+    player_tank.draw(screen)
 
-    for t in enemy_tanks:
-        t.move()
-        t.draw(screen)
+    enemy_tanks_team.update()
+    enemy_tanks_team.draw(screen)
 
     pygame.display.flip()
     clock.tick(FPS)

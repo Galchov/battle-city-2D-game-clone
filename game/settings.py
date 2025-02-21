@@ -6,5 +6,5 @@ PROJECT_ROOT = os.path.dirname(BASE_DIR)
 
 IMAGE_DIR = os.path.join(PROJECT_ROOT, "assets", "images")
 
-PLAYER_TANK_IMAGE = os.path.join(IMAGE_DIR, "Battle_City_Tank_Player1.png")
-ENEMY_TANK_IMAGE_3 = os.path.join(IMAGE_DIR, "Battle_City_Tank_Enemy3.png")
+player_tank_image = os.path.join(IMAGE_DIR, "Battle_City_Tank_Player1.png")
+enemy_tank_image = os.path.join(IMAGE_DIR, "Battle_City_Tank_Enemy3.png")

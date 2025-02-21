@@ -1,22 +1,22 @@
 import pygame
 
 
-from settings import PLAYER_TANK_IMAGE
+from settings import player_tank_image
 
 
-class PlayerTank:
+class PlayerTank(pygame.sprite.Sprite):
     hitbox_window = pygame.display.set_mode((50, 50))
 
-
     def __init__(self, x: int, y: int, speed: int) -> None:
+        pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = y
         self.speed = speed
         self.direction = 'UP'
-        self.original_image = pygame.image.load(PLAYER_TANK_IMAGE)
+        self.original_image = pygame.image.load(player_tank_image)
         self.image = pygame.transform.scale(self.original_image, (50, 50))
         self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
+        self.rect.topleft = (self.x, self.y)
         self.hitbox = (self.x - 1, self.y - 1, 52, 52)
     
     def move(self, keys) -> None:
@@ -50,6 +50,11 @@ class PlayerTank:
 
         self.rect = self.image.get_rect(center=self.rect.center)
 
+    def hit_object(self, enemy_team):
+        collision = pygame.sprite.spritecollide(self, enemy_team, False)
+        if collision:
+            pass
+
     def draw(self, screen) -> None:
         # Hitbox is declared here additionally, so it sticks with the object
         self.hitbox = (self.x - 1, self.y - 1, 52, 52)
@@ -65,4 +70,3 @@ class PlayerTank:
             self.y = 550
         
         screen.blit(self.image, (self.x, self.y))
-        
