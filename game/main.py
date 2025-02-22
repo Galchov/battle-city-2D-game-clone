@@ -23,12 +23,12 @@ pygame.display.set_caption("Battle City")
 player_tank_team = pygame.sprite.Group()
 enemy_tanks_team = pygame.sprite.Group()
 
-player_tank = PlayerTank(WIDTH // 2, HEIGHT // 2, 3)
+player_tank = PlayerTank(400, 300, 3)
 player_tank_team.add(player_tank)
 
-for _ in range(10):
+for _ in range(3):
     x_axis = random.randint(100, 700)
-    tank_obj = EnemyTank(x_axis, 50, 1)
+    tank_obj = EnemyTank(x_axis, 400, 1)
     enemy_tanks_team.add(tank_obj)
 
 # Game loop
@@ -42,7 +42,7 @@ while running:
     screen.fill("dark grey")
 
     keys = pygame.key.get_pressed()
-    player_tank.move(keys)
+    player_tank.update(keys)
     player_tank.rotate()
     player_tank.hit_object(enemy_tanks_team)
     player_tank.draw(screen)

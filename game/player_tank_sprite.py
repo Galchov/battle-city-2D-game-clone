@@ -5,21 +5,23 @@ from settings import player_tank_image
 
 
 class PlayerTank(pygame.sprite.Sprite):
-    hitbox_window = pygame.display.set_mode((50, 50))
+    # hitbox_window = pygame.display.set_mode((50, 50))
 
     def __init__(self, x: int, y: int, speed: int) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = y
         self.speed = speed
+
         self.direction = 'UP'
         self.original_image = pygame.image.load(player_tank_image)
         self.image = pygame.transform.scale(self.original_image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.topleft = (self.x, self.y)
-        self.hitbox = (self.x - 1, self.y - 1, 52, 52)
+        
+        # self.hitbox = (self.x - 1, self.y - 1, 52, 52)
     
-    def move(self, keys) -> None:
+    def update(self, keys) -> None:
         if keys[pygame.K_UP]:
             self.y -= self.speed
             self.direction = 'UP'
@@ -33,7 +35,7 @@ class PlayerTank(pygame.sprite.Sprite):
             self.x += self.speed
             self.direction = 'RIGHT'
 
-        self.rect.center = (self.x, self.y)
+        self.rect.topleft = (self.x, self.y)
 
     def rotate(self) -> None:
         if self.direction == 'UP':
@@ -51,14 +53,19 @@ class PlayerTank(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.rect.center)
 
     def hit_object(self, enemy_team):
-        collision = pygame.sprite.spritecollide(self, enemy_team, False)
-        if collision:
-            pass
+        hit_obects = pygame.sprite.spritecollide(self, enemy_team, False)
+        # if hit_obects:
+        #     # Handling left side
+        #     if self.x + 50 >= hit_obects[0].x:
+        #         self.x = hit_obects[0].x - self.rect.width
+            
+            # if self.x <= hit_obects[0].x + 50:
+            #     self.x = hit_obects[0].x + 50
 
     def draw(self, screen) -> None:
         # Hitbox is declared here additionally, so it sticks with the object
-        self.hitbox = (self.x - 1, self.y - 1, 52, 52)
-        pygame.draw.rect(self.hitbox_window, (255, 0, 0), self.hitbox, 1)
+        # self.hitbox = (self.x - 1, self.y - 1, 52, 52)
+        # pygame.draw.rect(self.hitbox_window, (255, 0, 0), self.hitbox, 1)
 
         if self.x <= 0:
             self.x = 0
