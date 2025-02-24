@@ -49,6 +49,8 @@ while running:
 
     enemy_tanks_team.update()
     enemy_tanks_team.draw(screen)
+    for enemy in enemy_tanks_team:
+        pygame.draw.rect(screen, (255, 0, 0), enemy.rect, 2)
 
     pygame.display.flip()
     clock.tick(FPS)

@@ -5,7 +5,6 @@ from settings import player_tank_image
 
 
 class PlayerTank(pygame.sprite.Sprite):
-    # hitbox_window = pygame.display.set_mode((50, 50))
 
     def __init__(self, x: int, y: int, speed: int) -> None:
         pygame.sprite.Sprite.__init__(self)
@@ -19,7 +18,7 @@ class PlayerTank(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (self.x, self.y)
         
-        # self.hitbox = (self.x - 1, self.y - 1, 52, 52)
+        self.hitbox = (self.x - 1, self.y - 1, 52, 52)
     
     def update(self, keys) -> None:
         if keys[pygame.K_UP]:
@@ -54,18 +53,31 @@ class PlayerTank(pygame.sprite.Sprite):
 
     def hit_object(self, enemy_team):
         hit_obects = pygame.sprite.spritecollide(self, enemy_team, False)
-        # if hit_obects:
-        #     # Handling left side
-        #     if self.x + 50 >= hit_obects[0].x:
-        #         self.x = hit_obects[0].x - self.rect.width
-            
-            # if self.x <= hit_obects[0].x + 50:
-            #     self.x = hit_obects[0].x + 50
+        if hit_obects:
+            enemy = hit_obects[0]
+
+            # Calculate overlap on each side
+            overlap_right = self.rect.right - enemy.rect.left
+            overlap_left = enemy.rect.right - self.rect.left
+            overlap_down = self.rect.bottom - enemy.rect.top
+            overlap_up = enemy.rect.bottom - self.rect.top
+
+            min_overlap = min(overlap_right, overlap_left, overlap_down, overlap_up)
+
+            # Stop movement in the direction of the smallest overlap
+            if min_overlap == overlap_right:
+                self.x = enemy.x - self.rect.width  # Stop moving right
+            elif min_overlap == overlap_left:
+                self.x = enemy.x + enemy.rect.width  # Stop moving left
+            elif min_overlap == overlap_down:
+                self.y = enemy.y - self.rect.height  # Stop moving down
+            elif min_overlap == overlap_up:
+                self.y = enemy.y + enemy.rect.height  # Stop moving up
 
     def draw(self, screen) -> None:
         # Hitbox is declared here additionally, so it sticks with the object
-        # self.hitbox = (self.x - 1, self.y - 1, 52, 52)
-        # pygame.draw.rect(self.hitbox_window, (255, 0, 0), self.hitbox, 1)
+        self.hitbox = (self.x - 1, self.y - 1, 52, 52)
+        pygame.draw.rect(screen, (0, 0, 255), self.hitbox, 2)
 
         if self.x <= 0:
             self.x = 0

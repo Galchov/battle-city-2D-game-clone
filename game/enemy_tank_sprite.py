@@ -12,11 +12,14 @@ class EnemyTank(pygame.sprite.Sprite):
         self.x = x
         self.y = y
         self.speed = speed
+
         self.direction = 'DOWN'
         self.original_image = pygame.image.load(enemy_tank_image)
         self.image = pygame.transform.scale(self.original_image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.topleft = (self.x, self.y)
+
+        self.hitbox = (self.x - 1, self.y - 1, 52, 52)
 
     def update(self) -> None:
         directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
