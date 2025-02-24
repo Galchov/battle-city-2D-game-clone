@@ -62,3 +62,30 @@ class EnemyTank(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (50, 50))
 
         self.rect = self.image.get_rect(center=self.rect.center)
+
+    def hit_object(self, other_objects):
+        hit_obects = pygame.sprite.spritecollide(self, other_objects, False)
+        if hit_obects:
+            enemy = hit_obects[0]
+
+            # Calculate overlap on each side
+            overlap_right = self.rect.right - enemy.rect.left
+            overlap_left = enemy.rect.right - self.rect.left
+            overlap_down = self.rect.bottom - enemy.rect.top
+            overlap_up = enemy.rect.bottom - self.rect.top
+
+            min_overlap = min(overlap_right, overlap_left, overlap_down, overlap_up)
+
+            # Stop movement in the direction of the smallest overlap
+            if min_overlap == overlap_right:
+                self.x = enemy.x - self.rect.width  # Stop moving right
+            elif min_overlap == overlap_left:
+                self.x = enemy.x + enemy.rect.width  # Stop moving left
+            elif min_overlap == overlap_down:
+                self.y = enemy.y - self.rect.height  # Stop moving down
+            elif min_overlap == overlap_up:
+                self.y = enemy.y + enemy.rect.height  # Stop moving up
+
+            directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
+            self.direction = random.choice(directions)
+            self.rotate(self.direction)

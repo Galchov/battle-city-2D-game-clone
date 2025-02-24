@@ -51,8 +51,8 @@ class PlayerTank(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect(center=self.rect.center)
 
-    def hit_object(self, enemy_team):
-        hit_obects = pygame.sprite.spritecollide(self, enemy_team, False)
+    def hit_object(self, other_objects):
+        hit_obects = pygame.sprite.spritecollide(self, other_objects, False)
         if hit_obects:
             enemy = hit_obects[0]
 
