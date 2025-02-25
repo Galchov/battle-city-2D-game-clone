@@ -5,6 +5,8 @@ from settings import player_tank_image
 
 
 class PlayerTank(pygame.sprite.Sprite):
+    WIDTH = 50
+    HEIGHT = 50
 
     def __init__(self, x: int, y: int, speed: int) -> None:
         pygame.sprite.Sprite.__init__(self)
@@ -14,11 +16,11 @@ class PlayerTank(pygame.sprite.Sprite):
 
         self.direction = 'UP'
         self.original_image = pygame.image.load(player_tank_image)
-        self.image = pygame.transform.scale(self.original_image, (50, 50))
+        self.image = pygame.transform.scale(self.original_image, (self.WIDTH, self.HEIGHT))
         self.rect = self.image.get_rect()
         self.rect.topleft = (self.x, self.y)
         
-        self.hitbox = (self.x - 1, self.y - 1, 52, 52)
+        self.hitbox = (self.x - 1, self.y - 1, self.WIDTH + 2, self.HEIGHT + 2)
     
     def update(self, keys) -> None:
         if keys[pygame.K_UP]:
