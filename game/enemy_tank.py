@@ -2,28 +2,22 @@ import pygame
 import random
 
 
+from base_tank import Tank
 from settings import enemy_tank_image
 
 
-class EnemyTank(pygame.sprite.Sprite):
-    WIDTH = 50
-    HEIGHT = 50
+class EnemyTank(Tank):
 
     def __init__(self, x: int, y: int, speed: int) -> None:
-        pygame.sprite.Sprite.__init__(self)
-        self.x = x
-        self.y = y
-        self.speed = speed
-
+        super().__init__(x, y, speed)
+        self.original_image = self.load_image()
         self.direction = 'DOWN'
-        self.original_image = pygame.image.load(enemy_tank_image)
-        self.image = pygame.transform.scale(self.original_image, (self.WIDTH, self.HEIGHT))
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (self.x, self.y)
-
         self.hitbox = (self.x - 1, self.y - 1, self.WIDTH + 2, self.HEIGHT + 2)
 
-    def update(self) -> None:
+    def load_image(self):
+        return pygame.image.load(enemy_tank_image)
+
+    def move(self) -> None:
         directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
 
         if self.direction == 'DOWN':
@@ -91,3 +85,16 @@ class EnemyTank(pygame.sprite.Sprite):
             directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
             self.direction = random.choice(directions)
             self.rotate(self.direction)
+
+    def draw(self, screen) -> None:
+        if self.x <= 0:
+            self.x = 0
+        if self.y <= 0:
+            self.y = 0
+        if self.x >= 750:
+            self.x = 750
+        if self.y >= 550:
+            self.y = 550
+        
+        screen.blit(self.image, (self.x, self.y))
+

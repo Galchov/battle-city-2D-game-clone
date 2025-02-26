@@ -2,8 +2,8 @@ import pygame
 import random
 
 
-from player_tank_sprite import PlayerTank
-from enemy_tank_sprite import EnemyTank
+from player_tank import PlayerTank
+from enemy_tank import EnemyTank
 
 
 pygame.init()
@@ -42,15 +42,15 @@ while running:
     screen.fill("dark grey")
 
     keys = pygame.key.get_pressed()
-    player_tank.update(keys)
+    player_tank.move(keys)
     player_tank.rotate()
     player_tank.hit_object(enemy_tanks_team)
     player_tank.draw(screen)
 
-    enemy_tanks_team.update()
-    enemy_tanks_team.draw(screen)
     for enemy in enemy_tanks_team:
+        enemy.draw(screen)
         pygame.draw.rect(screen, (255, 0, 0), enemy.rect, 2)
+        enemy.move()
         enemy.hit_object(player_tank_team)
 
     pygame.display.flip()
