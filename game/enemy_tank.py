@@ -43,7 +43,6 @@ class EnemyTank(Tank):
         
         self.rect.topleft = (self.x, self.y)
 
-
     def rotate(self, direction: str) -> None:
         if direction == 'UP':
             self.image = pygame.transform.rotate(self.original_image, 180)
@@ -97,4 +96,3 @@ class EnemyTank(Tank):
             self.y = 550
         
         screen.blit(self.image, (self.x, self.y))
-
