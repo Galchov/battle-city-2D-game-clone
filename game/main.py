@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from settings import *
 
 from battlefield import Battlefield
@@ -28,32 +28,27 @@ for i in range(3):
     tank_obj = EnemyTank(x, y, 1)
     enemy_tanks_team.add(tank_obj)
 
-# Game loop
-running = True
-while running:
+while True:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
-    
+            pygame.quit()
+            sys.exit()
+
     screen.fill("dark grey")
     
     battlefield.draw()
 
-    keys = pygame.key.get_pressed()
-    player_tank.move(keys)
+    player_tank.update()
     player_tank.rotate()
-    player_tank.hit_object(enemy_tanks_team)
+    player_tank.collision(enemy_tanks_team)
     player_tank.draw(screen)
 
     for enemy in enemy_tanks_team:
         enemy.draw(screen)
         pygame.draw.rect(screen, (255, 0, 0), enemy.rect, 2)
-        enemy.move()
-        enemy.hit_object(player_tank_team)
+        enemy.update()
+        enemy.collision(player_tank_team)
 
     pygame.display.flip()
     clock.tick(FPS)
-
-
-pygame.quit()

@@ -12,11 +12,14 @@ class PlayerTank(Tank):
         self.original_image = self.load_image()
         self.direction = 'UP'
         self.hitbox = (self.x - 1, self.y - 1, self.WIDTH + 2, self.HEIGHT + 2)
+        self.old_rect = self.rect.copy()
 
     def load_image(self):
         return pygame.image.load(PLAYER_TANK_IMAGE)
     
-    def move(self, keys) -> None:
+    def move(self):
+        keys = pygame.key.get_pressed()
+
         if keys[pygame.K_UP]:
             self.y -= self.speed
             self.direction = 'UP'
@@ -31,6 +34,10 @@ class PlayerTank(Tank):
             self.direction = 'RIGHT'
 
         self.rect.topleft = (self.x, self.y)
+    
+    def update(self) -> None:
+        self.old_rect = self.rect.copy()
+        self.move()
 
     def rotate(self) -> None:
         if self.direction == 'UP':
@@ -47,10 +54,10 @@ class PlayerTank(Tank):
 
         self.rect = self.image.get_rect(center=self.rect.center)
 
-    def hit_object(self, other_objects):
-        hit_obects = pygame.sprite.spritecollide(self, other_objects, False)
-        if hit_obects:
-            enemy = hit_obects[0]
+    def collision(self, other_objects):
+        collision_objects = pygame.sprite.spritecollide(self, other_objects, False)
+        if collision_objects:
+            enemy = collision_objects[0]
 
             # Calculate overlap on each side
             overlap_right = self.rect.right - enemy.rect.left

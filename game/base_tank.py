@@ -23,7 +23,7 @@ class Tank(pygame.sprite.Sprite, ABC):
         pass
 
     @abstractmethod
-    def move(self) -> None:
+    def update(self) -> None:
         pass
 
     @abstractmethod
@@ -31,7 +31,7 @@ class Tank(pygame.sprite.Sprite, ABC):
         pass
 
     @abstractmethod
-    def hit_object(self) -> None:
+    def collision(self) -> None:
         pass
 
     @abstractmethod

@@ -12,11 +12,13 @@ class EnemyTank(Tank):
         self.original_image = self.load_image()
         self.direction = 'DOWN'
         self.hitbox = (self.x - 1, self.y - 1, self.WIDTH + 2, self.HEIGHT + 2)
+        self.old_rect = self.rect.copy()
 
     def load_image(self):
         return pygame.image.load(ENEMY_TANK_IMAGE)
 
-    def move(self) -> None:
+    def update(self) -> None:
+        self.old_rect = self.rect.copy()
         directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
 
         if self.direction == 'DOWN':
@@ -57,7 +59,7 @@ class EnemyTank(Tank):
 
         self.rect = self.image.get_rect(center=self.rect.center)
 
-    def hit_object(self, other_objects):
+    def collision(self, other_objects):
         hit_obects = pygame.sprite.spritecollide(self, other_objects, False)
         if hit_obects:
             enemy = hit_obects[0]
