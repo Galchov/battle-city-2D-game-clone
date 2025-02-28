@@ -1,9 +1,8 @@
 import pygame
 import random
-
+from settings import BATTLEFIELD_SIZE, ENEMY_TANK_IMAGE
 
 from base_tank import Tank
-from settings import enemy_tank_image
 
 
 class EnemyTank(Tank):
@@ -15,14 +14,14 @@ class EnemyTank(Tank):
         self.hitbox = (self.x - 1, self.y - 1, self.WIDTH + 2, self.HEIGHT + 2)
 
     def load_image(self):
-        return pygame.image.load(enemy_tank_image)
+        return pygame.image.load(ENEMY_TANK_IMAGE)
 
     def move(self) -> None:
         directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
 
         if self.direction == 'DOWN':
             self.y += self.speed
-            if self.y >= 550:
+            if self.y >= BATTLEFIELD_SIZE - 50:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
         elif self.direction == 'UP':
@@ -37,7 +36,7 @@ class EnemyTank(Tank):
                 self.rotate(self.direction)
         elif self.direction == 'RIGHT':
             self.x += self.speed
-            if self.x >= 750:
+            if self.x >= BATTLEFIELD_SIZE - 50:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
         
@@ -86,13 +85,7 @@ class EnemyTank(Tank):
             self.rotate(self.direction)
 
     def draw(self, screen) -> None:
-        if self.x <= 0:
-            self.x = 0
-        if self.y <= 0:
-            self.y = 0
-        if self.x >= 750:
-            self.x = 750
-        if self.y >= 550:
-            self.y = 550
+        self.x = max(0, min(self.x, BATTLEFIELD_SIZE - 50))
+        self.y = max(0, min(self.y, BATTLEFIELD_SIZE - 50))
         
         screen.blit(self.image, (self.x, self.y))

@@ -1,8 +1,8 @@
 import pygame
+from settings import BATTLEFIELD_SIZE, PLAYER_TANK_IMAGE
 
 
 from base_tank import Tank
-from settings import player_tank_image
 
 
 class PlayerTank(Tank):
@@ -14,7 +14,7 @@ class PlayerTank(Tank):
         self.hitbox = (self.x - 1, self.y - 1, self.WIDTH + 2, self.HEIGHT + 2)
 
     def load_image(self):
-        return pygame.image.load(player_tank_image)
+        return pygame.image.load(PLAYER_TANK_IMAGE)
     
     def move(self, keys) -> None:
         if keys[pygame.K_UP]:
@@ -75,13 +75,7 @@ class PlayerTank(Tank):
         self.hitbox = (self.x - 1, self.y - 1, 52, 52)
         pygame.draw.rect(screen, (0, 0, 255), self.hitbox, 2)
 
-        if self.x <= 0:
-            self.x = 0
-        if self.y <= 0:
-            self.y = 0
-        if self.x >= 750:
-            self.x = 750
-        if self.y >= 550:
-            self.y = 550
+        self.x = max(0, min(self.x, BATTLEFIELD_SIZE - 50))
+        self.y = max(0, min(self.y, BATTLEFIELD_SIZE - 50))
         
         screen.blit(self.image, (self.x, self.y))

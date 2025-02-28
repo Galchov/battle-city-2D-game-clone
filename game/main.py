@@ -1,7 +1,7 @@
 import pygame
-import random
+from settings import *
 
-
+from battlefield import Battlefield
 from player_tank import PlayerTank
 from enemy_tank import EnemyTank
 
@@ -10,25 +10,22 @@ pygame.init()
 
 # Frame rate
 clock = pygame.time.Clock()
-FPS = 60
-
-# Screen size parameters
-WIDTH = 800
-HEIGHT = 600
 
 # Create the game window
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Battle City")
+
+battlefield = Battlefield(screen)
 
 player_tank_team = pygame.sprite.Group()
 enemy_tanks_team = pygame.sprite.Group()
 
-player_tank = PlayerTank(400, 300, 3)
+player_tank = PlayerTank(*PLAYER_SPAWN_POINT, 3)
 player_tank_team.add(player_tank)
 
-for _ in range(3):
-    x_axis = random.randint(100, 700)
-    tank_obj = EnemyTank(x_axis, 400, 1)
+for i in range(3):
+    x, y = ENEMY_SPAWN_POINTS[i]
+    tank_obj = EnemyTank(x, y, 1)
     enemy_tanks_team.add(tank_obj)
 
 # Game loop
@@ -40,6 +37,8 @@ while running:
             running = False
     
     screen.fill("dark grey")
+    
+    battlefield.draw()
 
     keys = pygame.key.get_pressed()
     player_tank.move(keys)
