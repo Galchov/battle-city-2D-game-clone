@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, time
 from settings import *
 
 from battlefield import Battlefield
@@ -17,18 +17,21 @@ pygame.display.set_caption("Battle City")
 
 battlefield = Battlefield(screen)
 
-player_tank_team = pygame.sprite.Group()
-enemy_tanks_team = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
 
 player_tank = PlayerTank(*PLAYER_SPAWN_POINT, 3)
-player_tank_team.add(player_tank)
+all_sprites.add(player_tank)
 
 for i in range(3):
     x, y = ENEMY_SPAWN_POINTS[i]
     tank_obj = EnemyTank(x, y, 1)
-    enemy_tanks_team.add(tank_obj)
+    all_sprites.add(tank_obj)
+
+prev_time = time.time()
 
 while True:
+    dt = time.time() - prev_time
+    prev_time = time.time()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -39,16 +42,13 @@ while True:
     
     battlefield.draw()
 
-    player_tank.update()
-    player_tank.rotate()
-    player_tank.collision(enemy_tanks_team)
-    player_tank.draw(screen)
-
-    for enemy in enemy_tanks_team:
-        enemy.draw(screen)
-        pygame.draw.rect(screen, (255, 0, 0), enemy.rect, 2)
-        enemy.update()
-        enemy.collision(player_tank_team)
+    all_sprites.update()
+    all_sprites.draw(screen)
 
     pygame.display.flip()
     clock.tick(FPS)
+
+# TODO 1: Implement deltatime
+# TODO 2: Refactor the Player and Enemy tanks classes
+# TODO 3: Merge all solid objects into one sprite group
+# TODO 4: Implement collision detection and effects

@@ -9,10 +9,7 @@ class PlayerTank(Tank):
 
     def __init__(self, x: int, y: int, speed: int) -> None:
         super().__init__(x, y, speed)
-        self.original_image = self.load_image()
         self.direction = 'UP'
-        self.hitbox = (self.x - 1, self.y - 1, self.WIDTH + 2, self.HEIGHT + 2)
-        self.old_rect = self.rect.copy()
 
     def load_image(self):
         return pygame.image.load(PLAYER_TANK_IMAGE)
@@ -33,11 +30,10 @@ class PlayerTank(Tank):
             self.x += self.speed
             self.direction = 'RIGHT'
 
+        self.x = max(0, min(self.x, BATTLEFIELD_SIZE - 50))
+        self.y = max(0, min(self.y, BATTLEFIELD_SIZE - 50))
+
         self.rect.topleft = (self.x, self.y)
-    
-    def update(self) -> None:
-        self.old_rect = self.rect.copy()
-        self.move()
 
     def rotate(self) -> None:
         if self.direction == 'UP':
@@ -78,11 +74,8 @@ class PlayerTank(Tank):
                 self.y = enemy.y + enemy.rect.height  # Stop moving up
 
     def draw(self, screen) -> None:
-        # Hitbox is declared here additionally, so it sticks with the object
-        self.hitbox = (self.x - 1, self.y - 1, 52, 52)
-        pygame.draw.rect(screen, (0, 0, 255), self.hitbox, 2)
-
-        self.x = max(0, min(self.x, BATTLEFIELD_SIZE - 50))
-        self.y = max(0, min(self.y, BATTLEFIELD_SIZE - 50))
-        
         screen.blit(self.image, (self.x, self.y))
+
+    def update(self) -> None:
+        self.move()
+        self.rotate()

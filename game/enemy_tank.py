@@ -9,15 +9,12 @@ class EnemyTank(Tank):
 
     def __init__(self, x: int, y: int, speed: int) -> None:
         super().__init__(x, y, speed)
-        self.original_image = self.load_image()
         self.direction = 'DOWN'
-        self.hitbox = (self.x - 1, self.y - 1, self.WIDTH + 2, self.HEIGHT + 2)
-        self.old_rect = self.rect.copy()
 
     def load_image(self):
         return pygame.image.load(ENEMY_TANK_IMAGE)
 
-    def update(self) -> None:
+    def move(self) -> None:
         self.old_rect = self.rect.copy()
         directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
 
@@ -41,6 +38,9 @@ class EnemyTank(Tank):
             if self.x >= BATTLEFIELD_SIZE - 50:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
+
+        self.x = max(0, min(self.x, BATTLEFIELD_SIZE - 50))
+        self.y = max(0, min(self.y, BATTLEFIELD_SIZE - 50))
         
         self.rect.topleft = (self.x, self.y)
 
@@ -87,7 +87,8 @@ class EnemyTank(Tank):
             self.rotate(self.direction)
 
     def draw(self, screen) -> None:
-        self.x = max(0, min(self.x, BATTLEFIELD_SIZE - 50))
-        self.y = max(0, min(self.y, BATTLEFIELD_SIZE - 50))
-        
         screen.blit(self.image, (self.x, self.y))
+
+    def update(self):
+        self.move()
+        
