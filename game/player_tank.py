@@ -14,20 +14,20 @@ class PlayerTank(Tank):
     def load_image(self):
         return pygame.image.load(PLAYER_TANK_IMAGE)
     
-    def move(self):
+    def move(self, dt):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_UP]:
-            self.y -= self.speed
+            self.y -= self.speed * dt
             self.direction = 'UP'
         elif keys[pygame.K_DOWN]:
-            self.y += self.speed
+            self.y += self.speed * dt
             self.direction = 'DOWN'
         elif keys[pygame.K_LEFT]:
-            self.x -= self.speed
+            self.x -= self.speed * dt
             self.direction = 'LEFT'
         elif keys[pygame.K_RIGHT]:
-            self.x += self.speed
+            self.x += self.speed * dt
             self.direction = 'RIGHT'
 
         self.x = max(0, min(self.x, BATTLEFIELD_SIZE - 50))
@@ -76,6 +76,6 @@ class PlayerTank(Tank):
     def draw(self, screen) -> None:
         screen.blit(self.image, (self.x, self.y))
 
-    def update(self) -> None:
-        self.move()
+    def update(self, dt) -> None:
+        self.move(dt)
         self.rotate()

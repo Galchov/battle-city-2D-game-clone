@@ -14,27 +14,27 @@ class EnemyTank(Tank):
     def load_image(self):
         return pygame.image.load(ENEMY_TANK_IMAGE)
 
-    def move(self) -> None:
+    def move(self, dt) -> None:
         self.old_rect = self.rect.copy()
         directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
 
         if self.direction == 'DOWN':
-            self.y += self.speed
+            self.y += self.speed * dt
             if self.y >= BATTLEFIELD_SIZE - 50:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
         elif self.direction == 'UP':
-            self.y -= self.speed
+            self.y -= self.speed * dt
             if self.y <= 0:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
         elif self.direction == 'LEFT':
-            self.x -= self.speed
+            self.x -= self.speed * dt
             if self.x <= 0:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
         elif self.direction == 'RIGHT':
-            self.x += self.speed
+            self.x += self.speed * dt
             if self.x >= BATTLEFIELD_SIZE - 50:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
@@ -89,6 +89,6 @@ class EnemyTank(Tank):
     def draw(self, screen) -> None:
         screen.blit(self.image, (self.x, self.y))
 
-    def update(self):
-        self.move()
+    def update(self, dt):
+        self.move(dt)
         
