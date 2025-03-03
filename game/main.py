@@ -19,16 +19,22 @@ battlefield = Battlefield(screen)
 
 all_sprites = pygame.sprite.Group()
 
-player_tank = PlayerTank(*PLAYER_SPAWN_POINT, 300)
+player_tank = PlayerTank(*PLAYER_SPAWN_POINT, 200)
 all_sprites.add(player_tank)
 
 for i in range(3):
     x, y = ENEMY_SPAWN_POINTS[i]
-    tank_obj = EnemyTank(x, y, 100)
+    tank_obj = EnemyTank(x, y, 50)
     all_sprites.add(tank_obj)
 
+prev_time = time.time()
 while True:
-    dt = clock.tick(FPS) / 1000
+    # This works, but is less precise
+    # dt = clock.tick(FPS) / 1000
+
+    # For better precision
+    dt = time.time() - prev_time
+    prev_time = time.time()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -42,7 +48,7 @@ while True:
     all_sprites.update(dt)
     all_sprites.draw(screen)
 
-    pygame.display.flip()
+    pygame.display.update()
     clock.tick(FPS)
 
 # TODO 1: Implement deltatime

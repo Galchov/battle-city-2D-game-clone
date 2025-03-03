@@ -23,7 +23,7 @@ class Tank(pygame.sprite.Sprite, ABC):
         pass
 
     @abstractmethod
-    def update(self) -> None:
+    def move(self) -> None:
         pass
 
     @abstractmethod
@@ -36,4 +36,8 @@ class Tank(pygame.sprite.Sprite, ABC):
 
     @abstractmethod
     def draw(self, screen) -> None:
+        pass
+
+    @abstractmethod
+    def update(self) -> None:
         pass
