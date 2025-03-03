@@ -35,9 +35,5 @@ class Tank(pygame.sprite.Sprite, ABC):
         pass
 
     @abstractmethod
-    def draw(self, screen) -> None:
-        pass
-
-    @abstractmethod
     def update(self) -> None:
         pass

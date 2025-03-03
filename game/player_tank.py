@@ -12,7 +12,7 @@ class PlayerTank(Tank):
         self.direction = 'UP'
 
     def load_image(self):
-        return pygame.image.load(PLAYER_TANK_IMAGE)
+        return pygame.image.load(PLAYER_TANK_IMAGE).convert_alpha()
     
     def move(self, dt):
         keys = pygame.key.get_pressed()
@@ -72,9 +72,6 @@ class PlayerTank(Tank):
                 self.y = enemy.y - self.rect.height  # Stop moving down
             elif min_overlap == overlap_up:
                 self.y = enemy.y + enemy.rect.height  # Stop moving up
-
-    def draw(self, screen) -> None:
-        screen.blit(self.image, (self.x, self.y))
 
     def update(self, dt) -> None:
         self.move(dt)

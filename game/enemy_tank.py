@@ -12,7 +12,7 @@ class EnemyTank(Tank):
         self.direction = 'DOWN'
 
     def load_image(self):
-        return pygame.image.load(ENEMY_TANK_IMAGE)
+        return pygame.image.load(ENEMY_TANK_IMAGE).convert_alpha()
 
     def move(self, dt) -> None:
         self.old_rect = self.rect.copy()
@@ -85,9 +85,6 @@ class EnemyTank(Tank):
             directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
             self.direction = random.choice(directions)
             self.rotate(self.direction)
-
-    def draw(self, screen) -> None:
-        screen.blit(self.image, (self.x, self.y))
 
     def update(self, dt):
         self.move(dt)
