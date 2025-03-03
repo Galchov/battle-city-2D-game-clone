@@ -1,39 +1,41 @@
 import pygame
 from settings import BATTLEFIELD_SIZE, PLAYER_TANK_IMAGE
 
-
 from base_tank import Tank
 
 
 class PlayerTank(Tank):
 
-    def __init__(self, x: int, y: int, speed: int) -> None:
-        super().__init__(x, y, speed)
+    def __init__(self, position: tuple, speed: int) -> None:
+        super().__init__(position, speed)
+        self.position = pygame.math.Vector2(self.rect.topleft)
         self.direction = 'UP'
+        self.old_rect = self.rect.copy()
 
-    def load_image(self):
+    def load_image(self) -> pygame.image:
         return pygame.image.load(PLAYER_TANK_IMAGE).convert_alpha()
     
-    def move(self, dt):
+    def move(self, dt) -> None:
+        self.old_rect = self.rect.copy()
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_UP]:
-            self.y -= self.speed * dt
+            self.position.y -= self.speed * dt
             self.direction = 'UP'
         elif keys[pygame.K_DOWN]:
-            self.y += self.speed * dt
+            self.position.y += self.speed * dt
             self.direction = 'DOWN'
         elif keys[pygame.K_LEFT]:
-            self.x -= self.speed * dt
+            self.position.x -= self.speed * dt
             self.direction = 'LEFT'
         elif keys[pygame.K_RIGHT]:
-            self.x += self.speed * dt
+            self.position.x += self.speed * dt
             self.direction = 'RIGHT'
 
-        self.x = max(0, min(self.x, BATTLEFIELD_SIZE - 50))
-        self.y = max(0, min(self.y, BATTLEFIELD_SIZE - 50))
+        self.position.x = max(0, min(self.position.x, BATTLEFIELD_SIZE - 50))
+        self.position.y = max(0, min(self.position.y, BATTLEFIELD_SIZE - 50))
 
-        self.rect.topleft = (self.x, self.y)
+        self.rect.topleft = round(self.position.x), round(self.position.y)
 
     def rotate(self) -> None:
         if self.direction == 'UP':
@@ -50,29 +52,10 @@ class PlayerTank(Tank):
 
         self.rect = self.image.get_rect(center=self.rect.center)
 
-    def collision(self, other_objects):
-        collision_objects = pygame.sprite.spritecollide(self, other_objects, False)
-        if collision_objects:
-            enemy = collision_objects[0]
-
-            # Calculate overlap on each side
-            overlap_right = self.rect.right - enemy.rect.left
-            overlap_left = enemy.rect.right - self.rect.left
-            overlap_down = self.rect.bottom - enemy.rect.top
-            overlap_up = enemy.rect.bottom - self.rect.top
-
-            min_overlap = min(overlap_right, overlap_left, overlap_down, overlap_up)
-
-            # Stop movement in the direction of the smallest overlap
-            if min_overlap == overlap_right:
-                self.x = enemy.x - self.rect.width  # Stop moving right
-            elif min_overlap == overlap_left:
-                self.x = enemy.x + enemy.rect.width  # Stop moving left
-            elif min_overlap == overlap_down:
-                self.y = enemy.y - self.rect.height  # Stop moving down
-            elif min_overlap == overlap_up:
-                self.y = enemy.y + enemy.rect.height  # Stop moving up
+    def collision(self) -> None:
+        pass
 
     def update(self, dt) -> None:
         self.move(dt)
         self.rotate()
+        self.collision()

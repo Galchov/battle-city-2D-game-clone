@@ -19,12 +19,12 @@ battlefield = Battlefield(screen)
 
 all_sprites = pygame.sprite.Group()
 
-player_tank = PlayerTank(*PLAYER_SPAWN_POINT, 200)
+player_tank = PlayerTank(PLAYER_SPAWN_POINT, 200)
 all_sprites.add(player_tank)
 
 for i in range(3):
     x, y = ENEMY_SPAWN_POINTS[i]
-    tank_obj = EnemyTank(x, y, 50)
+    tank_obj = EnemyTank((x, y), 50)
     all_sprites.add(tank_obj)
 
 prev_time = time.time()
@@ -46,12 +46,8 @@ while True:
     battlefield.draw()
 
     all_sprites.update(dt)
+
     all_sprites.draw(screen)
 
     pygame.display.update()
     clock.tick(FPS)
-
-# TODO 1: Implement deltatime
-# TODO 2: Refactor the Player and Enemy tanks classes
-# TODO 3: Merge all solid objects into one sprite group
-# TODO 4: Implement collision detection and effects

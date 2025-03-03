@@ -7,11 +7,13 @@ from base_tank import Tank
 
 class EnemyTank(Tank):
 
-    def __init__(self, x: int, y: int, speed: int) -> None:
-        super().__init__(x, y, speed)
+    def __init__(self, position: tuple, speed: int) -> None:
+        super().__init__(position, speed)
+        self.position = pygame.math.Vector2(self.rect.topleft)
         self.direction = 'DOWN'
+        self.old_rect = self.rect.copy()
 
-    def load_image(self):
+    def load_image(self) -> pygame.image:
         return pygame.image.load(ENEMY_TANK_IMAGE).convert_alpha()
 
     def move(self, dt) -> None:
@@ -19,30 +21,27 @@ class EnemyTank(Tank):
         directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
 
         if self.direction == 'DOWN':
-            self.y += self.speed * dt
-            if self.y >= BATTLEFIELD_SIZE - 50:
+            self.position.y += self.speed * dt
+            if self.position.y >= BATTLEFIELD_SIZE - 50:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
         elif self.direction == 'UP':
-            self.y -= self.speed * dt
-            if self.y <= 0:
+            self.position.y -= self.speed * dt
+            if self.position.y <= 0:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
         elif self.direction == 'LEFT':
-            self.x -= self.speed * dt
-            if self.x <= 0:
+            self.position.x -= self.speed * dt
+            if self.position.x <= 0:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
         elif self.direction == 'RIGHT':
-            self.x += self.speed * dt
-            if self.x >= BATTLEFIELD_SIZE - 50:
+            self.position.x += self.speed * dt
+            if self.position.x >= BATTLEFIELD_SIZE - 50:
                 self.direction = random.choice(directions)
                 self.rotate(self.direction)
-
-        self.x = max(0, min(self.x, BATTLEFIELD_SIZE - 50))
-        self.y = max(0, min(self.y, BATTLEFIELD_SIZE - 50))
         
-        self.rect.topleft = (self.x, self.y)
+        self.rect.topleft = round(self.position.x), round(self.position.y)
 
     def rotate(self, direction: str) -> None:
         if direction == 'UP':
@@ -59,33 +58,9 @@ class EnemyTank(Tank):
 
         self.rect = self.image.get_rect(center=self.rect.center)
 
-    def collision(self, other_objects):
-        hit_obects = pygame.sprite.spritecollide(self, other_objects, False)
-        if hit_obects:
-            enemy = hit_obects[0]
+    def collision(self) -> None:
+        pass
 
-            # Calculate overlap on each side
-            overlap_right = self.rect.right - enemy.rect.left
-            overlap_left = enemy.rect.right - self.rect.left
-            overlap_down = self.rect.bottom - enemy.rect.top
-            overlap_up = enemy.rect.bottom - self.rect.top
-
-            min_overlap = min(overlap_right, overlap_left, overlap_down, overlap_up)
-
-            # Stop movement in the direction of the smallest overlap
-            if min_overlap == overlap_right:
-                self.x = enemy.x - self.rect.width  # Stop moving right
-            elif min_overlap == overlap_left:
-                self.x = enemy.x + enemy.rect.width  # Stop moving left
-            elif min_overlap == overlap_down:
-                self.y = enemy.y - self.rect.height  # Stop moving down
-            elif min_overlap == overlap_up:
-                self.y = enemy.y + enemy.rect.height  # Stop moving up
-
-            directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
-            self.direction = random.choice(directions)
-            self.rotate(self.direction)
-
-    def update(self, dt):
+    def update(self, dt) -> None:
         self.move(dt)
         

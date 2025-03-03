@@ -6,17 +6,16 @@ class Tank(pygame.sprite.Sprite, ABC):
     WIDTH = 50
     HEIGHT = 50
 
-    def __init__(self, x: int, y: int, speed: int) -> None:
+    def __init__(self, position: tuple, speed: int) -> None:
         pygame.sprite.Sprite.__init__(self)
-        self.x = x
-        self.y = y
+        self.position = position    # (x, y)
         self.speed = speed
         self.direction = None
 
         self.original_image = self.load_image()
         self.image = pygame.transform.scale(self.original_image, (self.WIDTH, self.HEIGHT))
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (self.x, self.y)
+        self.rect = self.image.get_rect(topleft=position)
+        self.old_rect = self.rect.copy()
 
     @abstractmethod
     def load_image(self) -> None:
