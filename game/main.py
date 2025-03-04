@@ -1,53 +1,61 @@
 import pygame, sys, time
-from settings import *
-
-from battlefield import Battlefield
-from player_tank import PlayerTank
-from enemy_tank import EnemyTank
+import settings as gs
 
 
-pygame.init()
+class Game:
+    def __init__(self) -> None:
+        """Main Game Object"""
 
-# Frame rate
-clock = pygame.time.Clock()
+        # Initialize the pygame module
+        pygame.init()
+        
+        # Create the game window
+        self.screen = pygame.display.set_mode((gs.SCREEN_WIDTH, gs.SCREEN_HEIGHT))
 
-# Create the game window
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Battle City")
+        # Set screen caption
+        pygame.display.set_caption("Battle City")
 
-battlefield = Battlefield(screen)
+        # Frame rate
+        self.clock = pygame.time.Clock()
 
-all_sprites = pygame.sprite.Group()
+        self.prev_time = time.time()
 
-player_tank = PlayerTank(PLAYER_SPAWN_POINT, 200)
-all_sprites.add(player_tank)
+        self.run = True
 
-for i in range(3):
-    x, y = ENEMY_SPAWN_POINTS[i]
-    tank_obj = EnemyTank((x, y), 50)
-    all_sprites.add(tank_obj)
+    def run_game(self) -> None:
+        """Main Game While Loop"""
+        while self.run:
+            dt = time.time() - self.prev_time
+            self.prev_time = time.time()
 
-prev_time = time.time()
-while True:
-    # This works, but is less precise
-    # dt = clock.tick(FPS) / 1000
+            self.input()
+            self.update()
+            self.draw()
 
-    # For better precision
-    dt = time.time() - prev_time
-    prev_time = time.time()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+    def input(self) -> None:
+        """Handles all inputs in the game"""
 
-    screen.fill("dark grey")
-    
-    battlefield.draw()
+        # Main game controls
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.run = False
 
-    all_sprites.update(dt)
+    def update(self, dt) -> None:
+        """Update the game and all objects"""
 
-    all_sprites.draw(screen)
+        self.clock.tick(gs.FPS)
 
-    pygame.display.update()
-    clock.tick(FPS)
+    def draw(self) -> None:
+        """Handles all game drawings on the screen"""
+
+        self.screen.fill(gs.DARK_GREY)
+
+        pygame.display.update()
+
+
+if __name__ == "__main__":
+    battle_city = Game()
+    battle_city.run_game()
+    pygame.quit()
+    sys.exit()
