@@ -56,6 +56,7 @@ class Game:
 
         self.screen.fill(gs.BLACK)
         self.screen.blit(self.assets.tank_images["Tank_4"]["Green"]["Left"][0], (400, 400))
+        self.screen.blit(self.assets.brick_tiles["small"], (50, 50))
 
         pygame.display.update()
 
