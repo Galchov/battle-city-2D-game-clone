@@ -15,3 +15,80 @@ FPS = 60
 # Colour definitions
 DARK_GREY = (128, 128, 128)
 BLACK = (0, 0, 0)
+
+# Spritesheet images and coordinates
+SPAWN_STAR = {"star_0": [(SPRITE_SIZE * 16), (SPRITE_SIZE * 6), SPRITE_SIZE, SPRITE_SIZE],
+              "star_1": [(SPRITE_SIZE * 17), (SPRITE_SIZE * 6), SPRITE_SIZE, SPRITE_SIZE],
+              "star_2": [(SPRITE_SIZE * 18), (SPRITE_SIZE * 6), SPRITE_SIZE, SPRITE_SIZE],
+              "star_3": [(SPRITE_SIZE * 19), (SPRITE_SIZE * 6), SPRITE_SIZE, SPRITE_SIZE]}
+
+SHIELD = {"shield_1": [(SPRITE_SIZE * 16), (SPRITE_SIZE * 9), SPRITE_SIZE, SPRITE_SIZE],
+          "shield_2": [(SPRITE_SIZE * 16), (SPRITE_SIZE * 9), SPRITE_SIZE, SPRITE_SIZE]}
+
+POWER_UPS = {"shield":      [(SPRITE_SIZE * 16), (SPRITE_SIZE * 7), SPRITE_SIZE, SPRITE_SIZE],
+             "freeze":      [(SPRITE_SIZE * 17), (SPRITE_SIZE * 7), SPRITE_SIZE, SPRITE_SIZE],
+             "fortify":     [(SPRITE_SIZE * 18), (SPRITE_SIZE * 7), SPRITE_SIZE, SPRITE_SIZE],
+             "power":       [(SPRITE_SIZE * 19), (SPRITE_SIZE * 7), SPRITE_SIZE, SPRITE_SIZE],
+             "explosion":   [(SPRITE_SIZE * 20), (SPRITE_SIZE * 7), SPRITE_SIZE, SPRITE_SIZE],
+             "extra_life":  [(SPRITE_SIZE * 21), (SPRITE_SIZE * 7), SPRITE_SIZE, SPRITE_SIZE],
+             "special":     [(SPRITE_SIZE * 22), (SPRITE_SIZE * 7), SPRITE_SIZE, SPRITE_SIZE]}
+
+SCORE = {"100": [(SPRITE_SIZE * 18), (SPRITE_SIZE * 10), SPRITE_SIZE, SPRITE_SIZE],
+         "200": [(SPRITE_SIZE * 19), (SPRITE_SIZE * 10), SPRITE_SIZE, SPRITE_SIZE],
+         "300": [(SPRITE_SIZE * 20), (SPRITE_SIZE * 10), SPRITE_SIZE, SPRITE_SIZE],
+         "400": [(SPRITE_SIZE * 21), (SPRITE_SIZE * 10), SPRITE_SIZE, SPRITE_SIZE],
+         "500": [(SPRITE_SIZE * 2), (SPRITE_SIZE * 10), SPRITE_SIZE, SPRITE_SIZE]}
+
+FLAG = {"Phoenix_Alive":        [(SPRITE_SIZE * 19), (SPRITE_SIZE * 2), SPRITE_SIZE, SPRITE_SIZE],
+        "Phoenix_Destroyed":    [(SPRITE_SIZE * 20), (SPRITE_SIZE * 2), SPRITE_SIZE, SPRITE_SIZE]}
+
+EXPLOSIONS = {"explode_1": [(SPRITE_SIZE * 16), (SPRITE_SIZE * 8), SPRITE_SIZE, SPRITE_SIZE], 
+              "explode_2": [(SPRITE_SIZE * 17), (SPRITE_SIZE * 8), SPRITE_SIZE, SPRITE_SIZE], 
+              "explode_3": [(SPRITE_SIZE * 18), (SPRITE_SIZE * 8), SPRITE_SIZE, SPRITE_SIZE], 
+              "explode_4": [(SPRITE_SIZE * 19), (SPRITE_SIZE * 8), SPRITE_SIZE * 2, SPRITE_SIZE * 2], 
+              "explode_5": [(SPRITE_SIZE * 21), (SPRITE_SIZE * 8), SPRITE_SIZE * 2, SPRITE_SIZE * 2]}
+
+BULLETS = {"Up":    [(SPRITE_SIZE * 20), (SPRITE_SIZE * 6) + 4, 8, 8],
+           "Left":  [(SPRITE_SIZE * 20) + 8, (SPRITE_SIZE * 6) + 4, 8, 8],
+           "Down":  [(SPRITE_SIZE * 21), (SPRITE_SIZE * 6) + 4, 8, 8],
+           "Right": [(SPRITE_SIZE * 21) + 8, (SPRITE_SIZE * 6) + 4, 8, 8]}
+
+MAP_TILES = {
+    # Bricks
+    432: {"small":          [(SPRITE_SIZE * 16), (SPRITE_SIZE * 4), 8, 8],
+          "small_right":    [(SPRITE_SIZE * 16) + 12, (SPRITE_SIZE * 4), 4, 8],
+          "small_bot":      [(SPRITE_SIZE * 17), (SPRITE_SIZE * 4) + 4, 8, 4],
+          "small_left":     [(SPRITE_SIZE * 17) + 8, (SPRITE_SIZE * 4), 4, 8],
+          "small_top":      [(SPRITE_SIZE * 18), (SPRITE_SIZE * 4), 8, 4]},
+    # Steel
+    482: {"small":          [(SPRITE_SIZE * 16), (SPRITE_SIZE * 4) + 8, 8, 8]},
+    # Forest
+    483: {"small":          [(SPRITE_SIZE * 16) + 8, (SPRITE_SIZE * 4) + 8, 8, 8]},
+    # Ice
+    484: {"small":          [(SPRITE_SIZE * 17), (SPRITE_SIZE * 4) + 8, 8, 8]},
+    # Water
+    533: {"small_1":        [(SPRITE_SIZE * 16) + 8, (SPRITE_SIZE * 5), 8, 8],
+          "small_2":        [(SPRITE_SIZE * 17), (SPRITE_SIZE * 5), 8, 8]}
+}
+
+HUD_INFO = {"stage":        [(SPRITE_SIZE * 20) + 8, (SPRITE_SIZE * 11), 40, 8],
+            "num_0":        [(SPRITE_SIZE * 20) + 8, (SPRITE_SIZE * 11) + 8, 8, 8],
+            "num_1":        [(SPRITE_SIZE * 21), (SPRITE_SIZE * 11) + 8, 8, 8],
+            "num_2":        [(SPRITE_SIZE * 21) + 8, (SPRITE_SIZE * 11) + 8, 8, 8],
+            "num_3":        [(SPRITE_SIZE * 22), (SPRITE_SIZE * 11) + 8, 8, 8],
+            "num_4":        [(SPRITE_SIZE * 22) + 8, (SPRITE_SIZE * 11) + 8, 8, 8],
+            "num_5":        [(SPRITE_SIZE * 20) + 8, (SPRITE_SIZE * 12), 8, 8],
+            "num_6":        [(SPRITE_SIZE * 21), (SPRITE_SIZE * 12), 8, 8],
+            "num_7":        [(SPRITE_SIZE * 21) + 8, (SPRITE_SIZE * 12), 8, 8],
+            "num_8":        [(SPRITE_SIZE * 22), (SPRITE_SIZE * 12), 8, 8],
+            "num_9":        [(SPRITE_SIZE * 22) + 8, (SPRITE_SIZE * 12), 8, 8],
+            "life":         [(SPRITE_SIZE * 20), (SPRITE_SIZE * 12), 8, 8],
+            "info_panel":   [(SPRITE_SIZE * 23), (SPRITE_SIZE * 0), 32, (16 * 15)],
+            "grey_square":  [(SPRITE_SIZE * 23), (SPRITE_SIZE * 0), 8, 8]}
+
+NUMS = {
+    0: [0, 0, 8, 8], 1: [8, 0, 8, 8], 2: [16, 0, 8, 8], 3: [24, 0, 8, 8], 4: [32, 0, 8, 8],
+    5: [0, 8, 8, 8], 6: [8, 8, 8, 8], 7: [16, 8, 8, 8], 8: [24, 8, 8, 8], 9: [32, 8, 8, 8]}
+
+CONTEXT = {"pause":     [(SPRITE_SIZE * 18), (SPRITE_SIZE * 11), 40, 8],
+           "game_over": [(SPRITE_SIZE * 18), (SPRITE_SIZE * 11) + 8, 32, 16]}
