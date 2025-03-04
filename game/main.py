@@ -1,6 +1,8 @@
 import pygame, sys, time
 import settings as gs
 
+from game_assets import GameAssets
+
 
 class Game:
     def __init__(self) -> None:
@@ -18,9 +20,12 @@ class Game:
         # Frame rate
         self.clock = pygame.time.Clock()
 
+        # Set up for finding delta time
         self.prev_time = time.time()
 
         self.run = True
+
+        self.assets = GameAssets()
 
     def run_game(self) -> None:
         """Main Game While Loop"""
@@ -41,7 +46,7 @@ class Game:
             if event.type == pygame.QUIT:
                 self.run = False
 
-    def update(self, dt) -> None:
+    def update(self) -> None:
         """Update the game and all objects"""
 
         self.clock.tick(gs.FPS)
@@ -49,7 +54,8 @@ class Game:
     def draw(self) -> None:
         """Handles all game drawings on the screen"""
 
-        self.screen.fill(gs.DARK_GREY)
+        self.screen.fill(gs.BLACK)
+        self.screen.blit(self.assets.tank_images["Tank_4"]["Green"]["Left"][0], (400, 400))
 
         pygame.display.update()
 
