@@ -2,7 +2,7 @@ import pygame
 import random
 from settings import BATTLEFIELD_SIZE, ENEMY_TANK_IMAGE
 
-from base_tank import Tank
+from game.characters import Tank
 
 
 class EnemyTank(Tank):
