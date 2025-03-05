@@ -3,6 +3,7 @@ import settings as gs
 
 
 class GameAssets:
+    
     def __init__(self) -> None:
         """Object containing all of the game's assets"""
 
