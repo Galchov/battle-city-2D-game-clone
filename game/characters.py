@@ -29,6 +29,7 @@ class Tank(pygame.sprite.Sprite):
         self.active = True
         self.tank_level = tank_level
         self.color = color
+        self.tank_speed = gs.TANK_SPEED
 
         # Tank image, rectangle and frame index
         self.frame_index = 0
@@ -45,3 +46,68 @@ class Tank(pygame.sprite.Sprite):
         # If the tank is set to active, draw it on the screen
         if self.active:
             window.blit(self.image, self.rect)
+            pygame.draw.rect(window, gs.RED, self.rect, 1)
+
+    def move_tank(self, direction) -> None:
+        """Moves the tank in the given direction"""
+        self.direction = direction
+
+        if direction == "Up":
+            self.y_pos -= self.tank_speed
+        elif direction == "Down":
+            self.y_pos += self.tank_speed
+        elif direction == "Left":
+            self.x_pos -= self.tank_speed
+        elif direction == "Right":
+            self.x_pos += self.tank_speed
+
+        # Update the tank rectangle position
+        self.rect.topleft = (self.x_pos, self.y_pos)
+
+        # Update the tank animanion
+        self.tank_movement_animation()
+
+        # Detect tank collision with other tanks
+        self.tank_to_tank_collisions()
+
+    def tank_movement_animation(self) -> None:
+        """Updates the animation images while the tank is moving"""
+
+        self.frame_index += 1
+        image_list_length = len(self.tank_images[f"Tank_{self.tank_level}"][self.color][self.direction])
+        self.frame_index = self.frame_index % image_list_length
+        self.image = self.tank_images[f"Tank_{self.tank_level}"][self.color][self.direction][self.frame_index]
+
+    def tank_to_tank_collisions(self):
+        """Checks if tank collides with another tank"""
+
+        tank_collision = pygame.sprite.spritecollide(self, self.tank_group, False)
+        if len(tank_collision) == 1:
+            return
+        
+        for tank in tank_collision:
+            # Skip the current tank
+            if tank == self:
+                continue
+
+            if self.direction == "Right":
+                if self.rect.right >= tank.rect.left and \
+                    self.rect.bottom > tank.rect.top and self.rect.top < tank.rect.bottom:
+                    self.rect.right = tank.rect.left
+                    self.x_pos = self.rect.x
+            elif self.direction == "Left":
+                if self.rect.left <= tank.rect.right and \
+                    self.rect.bottom > tank.rect.top and self.rect.top < tank.rect.bottom:
+                    self.rect.left = tank.rect.right
+                    self.x_pos = self.rect.x
+            elif self.direction == "Up":
+                if self.rect.top <= tank.rect.bottom and \
+                    self.rect.left < tank.rect.right and self.rect.right > tank.rect.left:
+                    self.rect.top = tank.rect.bottom
+                    self.y_pos = self.rect.y
+            elif self.direction == "Down":
+                if self.rect.bottom >= tank.rect.top and \
+                    self.rect.left < tank.rect.right and self.rect.right > tank.rect.left:
+                    self.rect.bottom = tank.rect.top
+                    self.y_pos = self.rect.y
+            
