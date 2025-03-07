@@ -3,6 +3,7 @@ import settings as gs
 
 from characters import Tank
 from player_tank import PlayerTank
+from game_hud import GameHud
 
 
 class Game:
@@ -14,6 +15,10 @@ class Game:
 
         # Objects groups
         self.groups = {"All_Tanks": pygame.sprite.Group()}
+
+        # Game HUD
+        self.hud = GameHud(self, self.assets)
+
 
         # Player objects
         self.player_1 = PlayerTank(self, self.assets, self.groups, (400, 400), "Up", "Gold", 0)
@@ -38,11 +43,16 @@ class Game:
     
     def update(self) -> None:
 
+        self.hud.update()
         self.player_1.update()
         self.player_2.update()
 
     def draw(self, window) -> None:
         """Drawing to the screen"""
+
+        # Draw the HUD
+        self.hud.draw(window)
         
+        # Draw characters
         self.player_1.draw(window)
         self.player_2.draw(window)
