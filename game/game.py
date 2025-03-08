@@ -8,7 +8,7 @@ from game_hud import GameHud
 
 class Game:
 
-    def __init__(self, main, assets) -> None:
+    def __init__(self, main, assets, player_1=True, player_2=False) -> None:
         """The main Game Object"""
         self.main = main
         self.assets = assets
@@ -19,17 +19,24 @@ class Game:
         # Game HUD
         self.hud = GameHud(self, self.assets)
 
+        # Player attributes
+        self.player_1_active = player_1
+        self.player_2_active = player_2
 
         # Player objects
-        self.player_1 = PlayerTank(self, self.assets, self.groups, (400, 400), "Up", "Gold", 0)
-        self.player_2 = PlayerTank(self, self.assets, self.groups, (600, 400), "Up", "Green", 1)
+        if self.player_1_active:
+            self.player_1 = PlayerTank(self, self.assets, self.groups, (400, 400), "Up", "Gold", 0)
+        if self.player_2_active:
+            self.player_2 = PlayerTank(self, self.assets, self.groups, (600, 400), "Up", "Green", 1)
 
     def input(self) -> None:
         """Handle the game inputs while running"""
 
         keypressed = pygame.key.get_pressed()
-        self.player_1.input(keypressed)
-        self.player_2.input(keypressed)
+        if self.player_1_active:
+            self.player_1.input(keypressed)
+        if self.player_2_active:
+            self.player_2.input(keypressed)
 
         # pygame event handler
         for event in pygame.event.get():
@@ -44,8 +51,10 @@ class Game:
     def update(self) -> None:
 
         self.hud.update()
-        self.player_1.update()
-        self.player_2.update()
+        if self.player_1_active:
+            self.player_1.update()
+        if self.player_2_active:
+            self.player_2.update()
 
     def draw(self, window) -> None:
         """Drawing to the screen"""
@@ -54,5 +63,7 @@ class Game:
         self.hud.draw(window)
         
         # Draw characters
-        self.player_1.draw(window)
-        self.player_2.draw(window)
+        if self.player_1_active:
+            self.player_1.draw(window)
+        if self.player_2_active:
+            self.player_2.draw(window)

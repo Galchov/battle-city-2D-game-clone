@@ -7,6 +7,7 @@ class PlayerTank(Tank):
 
     def __init__(self, game, assets, groups, position, direction, color, tank_level) -> None:
         super().__init__(game, assets, groups, position, direction, color, tank_level)
+        self.lives = 3
 
     def input(self, keypressed) -> None:
         """Handles the tank movement"""

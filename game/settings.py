@@ -17,7 +17,7 @@ INFO_PANEL_X, INFO_PANEL_Y = SCREEN_WIDTH - (IMAGE_SIZE * 2), IMAGE_SIZE // 2
 FPS = 60
 
 # Colour definitions
-DARK_GREY = (128, 128, 128)
+GREY = (99, 99, 99)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 
