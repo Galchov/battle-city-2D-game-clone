@@ -25,6 +25,7 @@ class GameHud:
         self.level_image = self.display_stage_number(self.level)
         self.level_image_rect = self.level_image.get_rect(topleft=(14.5 * gs.IMAGE_SIZE, 13 * gs.IMAGE_SIZE))
 
+    # Generate the game HUD overlay image
     def generate_hud_overlay_screen(self) -> object:
         """Generates fixed overlay screen image"""
 
@@ -34,6 +35,28 @@ class GameHud:
         overlay_screen.blit(self.images["info_panel"], (gs.INFO_PANEL_X, gs.INFO_PANEL_Y))
         overlay_screen.set_colorkey(gs.BLACK)
         return overlay_screen
+    
+    # Draw the number of enemy tanks to the game HUD screen
+    def draw_enemy_tanks_remaining(self, window):
+        """Draws the little tanks images to represent the number of enemy tanks 
+        still remaining to spawn"""
+
+        row = 0
+        offset_x, offset_x_2 = 14.5 * gs.IMAGE_SIZE, 15 * gs.IMAGE_SIZE
+
+        for num in range(gs.STD_ENEMIES):
+            if num % 2 == 0:
+                x, y = offset_x, (4 + row) * (gs.IMAGE_SIZE // 2)
+            else:
+                x, y = offset_x_2, (4 + row) * (gs.IMAGE_SIZE // 2)
+                row += 1
+            
+            if num < self.enemies:
+                window.blit(self.images["life"], (x, y))
+            else:
+                window.blit(self.images["grey_square"], (x, y))
+        
+        return
     
     # Generate the player's lives image on the HUD
     def display_player_lives(self, player_lives, player_active):
@@ -78,7 +101,10 @@ class GameHud:
         return surface
     
     def update(self) -> None:
-        # Updat the number of player's lives available
+        # Update the number of enemy tanks still remaining to spawn
+        self.enemies = self.game.enemies
+
+        # Update the number of player's lives available
         self.player_1_active = self.game.player_1_active
 
         if self.player_1_active:
@@ -99,6 +125,8 @@ class GameHud:
 
     def draw(self, window) -> None:
         window.blit(self.hud_overlay, (0, 0))
+
+        self.draw_enemy_tanks_remaining(window)
 
         window.blit(self.player_1_lives_image, (14.5 * gs.IMAGE_SIZE, 9.5 * gs.IMAGE_SIZE))
         window.blit(self.player_2_lives_image, (14.5 * gs.IMAGE_SIZE, 11 * gs.IMAGE_SIZE))
