@@ -20,6 +20,11 @@ class GameHud:
         self.player_2_lives = 0
         self.player_2_lives_image = self.display_player_lives(self.player_2_lives, self.player_2_active)
 
+        # Level information
+        self.level = 1
+        self.level_image = self.display_stage_number(self.level)
+        self.level_image_rect = self.level_image.get_rect(topleft=(14.5 * gs.IMAGE_SIZE, 13 * gs.IMAGE_SIZE))
+
     def generate_hud_overlay_screen(self) -> object:
         """Generates fixed overlay screen image"""
 
@@ -54,6 +59,24 @@ class GameHud:
         surface.blit(image_2, (gs.IMAGE_SIZE // 2, 0))
         return surface
     
+    # Generate the stage level image
+    def display_stage_number(self, level):
+        width, height = gs.IMAGE_SIZE, gs.IMAGE_SIZE // 2
+        surface = pygame.Surface((width, height))
+        surface.fill(gs.BLACK)
+
+        if level < 10:
+            image_1 = self.images["num_0"]
+        else:
+            num = str(level)[0]
+            image_1 = self.images[f"num_{num}"]
+
+        surface.blit(image_1, (0, 0))
+        num = str(level)[-1]
+        image_2 = self.images[f"num_{num}"]
+        surface.blit(image_2, (gs.IMAGE_SIZE // 2, 0))
+        return surface
+    
     def update(self) -> None:
         # Updat the number of player's lives available
         self.player_1_active = self.game.player_1_active
@@ -69,9 +92,16 @@ class GameHud:
                 self.player_2_lives = self.game.player_2.lives
                 self.player_2_lives_image = self.display_player_lives(self.player_2_lives, self.player_2_active)
 
+        # Update the stage number image
+        if self.level != self.game.level_num:
+            self.level = self.game.level_num
+            self.level_image = self.display_stage_number(self.level)
+
     def draw(self, window) -> None:
         window.blit(self.hud_overlay, (0, 0))
 
         window.blit(self.player_1_lives_image, (14.5 * gs.IMAGE_SIZE, 9.5 * gs.IMAGE_SIZE))
         window.blit(self.player_2_lives_image, (14.5 * gs.IMAGE_SIZE, 11 * gs.IMAGE_SIZE))
+
+        window.blit(self.level_image, self.level_image_rect)
         

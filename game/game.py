@@ -19,6 +19,9 @@ class Game:
         # Game HUD
         self.hud = GameHud(self, self.assets)
 
+        # Level information
+        self.level_num = 1
+
         # Player attributes
         self.player_1_active = player_1
         self.player_2_active = player_2
@@ -47,6 +50,9 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.main.run = False
+                
+                if event.key == pygame.K_RETURN:
+                    self.level_num += 1
     
     def update(self) -> None:
 
