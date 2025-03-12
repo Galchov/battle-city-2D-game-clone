@@ -43,6 +43,10 @@ class Tank(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(self.spawn_pos))
         self.width, self.height = self.image.get_size()
 
+        # Shoot cooldown and bullet limit
+        self.bullet_limit = 1
+        self.bullet_sum = 0
+
         # Spawn images
         self.spawn_image = self.spawn_images[f"star_{self.frame_index}"]
         self.spawn_timer = pygame.time.get_ticks()
@@ -161,4 +165,9 @@ class Tank(pygame.sprite.Sprite):
             
     # Tank shooting
     def shoot(self):
+        if self.bullet_sum >= self.bullet_limit:
+            return
+        
         bullet = Bullet(self.groups, self.assets, self, self.rect.center, self.direction)
+        self.bullet_sum += 1
+        
