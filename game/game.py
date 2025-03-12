@@ -14,7 +14,8 @@ class Game:
         self.assets = assets
 
         # Objects groups
-        self.groups = {"All_Tanks": pygame.sprite.Group()}
+        self.groups = {"All_Tanks": pygame.sprite.Group(),
+                       "Bullets": pygame.sprite.Group()}
 
         # Game HUD
         self.hud = GameHud(self, self.assets)
@@ -53,6 +54,13 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.main.run = False
+
+                if event.key == pygame.K_SPACE:
+                    if self.player_1_active:
+                        self.player_1.shoot()
+                if event.key == pygame.K_RCTRL:
+                    if self.player_2_active:
+                        self.player_2.shoot()
     
     def update(self) -> None:
 
@@ -61,6 +69,8 @@ class Game:
             self.player_1.update()
         if self.player_2_active:
             self.player_2.update()
+        # for key in self.groups.keys():
+        #     self.groups[key].update()
 
     def draw(self, window) -> None:
         """Drawing to the screen"""
@@ -73,3 +83,5 @@ class Game:
             self.player_1.draw(window)
         if self.player_2_active:
             self.player_2.draw(window)
+        # for key in self.groups.keys():
+        #     self.groups[key].draw(window)
