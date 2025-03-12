@@ -31,6 +31,7 @@ GREEN = (0, 255, 0)
 
 # Tank variables
 TANK_SPEED = IMAGE_SIZE // SPRITE_SIZE
+TANK_PARALYSIS = 2000
 
 # Spritesheet images and coordinates
 SPAWN_STAR = {"star_0": [(SPRITE_SIZE * 16), (SPRITE_SIZE * 6), SPRITE_SIZE, SPRITE_SIZE],

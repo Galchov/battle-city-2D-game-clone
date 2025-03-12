@@ -6,7 +6,7 @@ from characters import Tank
 class PlayerTank(Tank):
 
     def __init__(self, game, assets, groups, position, direction, color, tank_level) -> None:
-        super().__init__(game, assets, groups, position, direction, color, tank_level)
+        super().__init__(game, assets, groups, position, direction, color, tank_level, False)
         self.lives = 3
 
     def input(self, keypressed) -> None:

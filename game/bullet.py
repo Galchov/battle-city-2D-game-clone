@@ -31,6 +31,7 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         self.move()
         self.collide_edge_of_screen()
+        self.collide_with_tank()
 
     def draw(self, window):
         window.blit(self.image, self.rect)
@@ -61,6 +62,21 @@ class Bullet(pygame.sprite.Sprite):
             self.rect.right >= gs.SCREEN_BORDER_RIGHT:
             self.update_owner()
             self.kill()
+
+    def collide_with_tank(self):
+        """Check if the bullet collides with a tank"""
+
+        tank_collisions = pygame.sprite.spritecollide(self, self.tanks, False)
+        for tank in tank_collisions:
+            if self.owner == tank:
+                continue
+
+            # Friendly fire
+            if not self.owner.enemy and not tank.enemy:
+                self.update_owner()
+                tank.paralyze_tank(gs.TANK_PARALYSIS)
+                self.kill()
+                break
 
     def update_owner(self):
         if self.owner.bullet_sum > 0:
