@@ -61,6 +61,9 @@ class Game:
                 if event.key == pygame.K_RCTRL:
                     if self.player_2_active:
                         self.player_2.shoot()
+                if event.key == pygame.K_RETURN:
+                    Tank(self, self.assets, self.groups, (100, 100), "Down")
+                    self.enemies -= 1
     
     def update(self) -> None:
 
