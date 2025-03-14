@@ -25,6 +25,10 @@ class Bullet(pygame.sprite.Sprite):
         self.image = self.images[self.direction]
         self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
 
+        # Bullet mask
+        self.mask = pygame.mask.from_surface(self.image)
+        self.mask_image = self.mask.to_surface()
+
         # Add bullet to the bullets group
         self.bullet_group.add(self)
 
@@ -36,6 +40,7 @@ class Bullet(pygame.sprite.Sprite):
 
     def draw(self, window):
         window.blit(self.image, self.rect)
+        window.blit(self.mask_image, self.rect)
         pygame.draw.rect(window, gs.GREEN, self.rect, 1)
         
     def move(self):
@@ -74,17 +79,19 @@ class Bullet(pygame.sprite.Sprite):
 
             # Friendly fire
             if not self.owner.enemy and not tank.enemy:
-                self.update_owner()
-                tank.paralyze_tank(gs.TANK_PARALYSIS)
-                self.kill()
-                break
+                if pygame.sprite.collide_mask(self, tank):
+                    self.update_owner()
+                    tank.paralyze_tank(gs.TANK_PARALYSIS)
+                    self.kill()
+                    break
 
             # Player bullet collision with AI tank or AI bullet collision with player tank
             if (not self.owner.enemy and tank.enemy) or (self.owner.enemy and not tank.enemy):
-                self.update_owner()
-                tank.destroy_tank()
-                self.kill()
-                break
+                if pygame.sprite.collide_mask(self, tank):
+                    self.update_owner()
+                    tank.destroy_tank()
+                    self.kill()
+                    break
     
     def collision_with_bullet(self):
         """Check for collision with other bullets and destroy self once detected"""
@@ -95,11 +102,12 @@ class Bullet(pygame.sprite.Sprite):
         for bullet in bullet_hit:
             if bullet == self:
                 continue
-            bullet.update_owner()
-            bullet.kill()
-            self.update_owner()
-            self.kill()
-            break
+            if pygame.sprite.collide_mask(self, bullet):
+                bullet.update_owner()
+                bullet.kill()
+                self.update_owner()
+                self.kill()
+                break
 
     def update_owner(self):
         if self.owner.bullet_sum > 0:
