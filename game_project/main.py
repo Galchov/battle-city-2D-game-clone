@@ -6,6 +6,9 @@ from game import Game
 from level_editor import LevelEditor
 
 
+# TODO: Level Editor input to be debugged and completed
+
+
 class Main:
 
     def __init__(self) -> None:
@@ -31,7 +34,7 @@ class Main:
         self.game = Game(self, self.assets, True, True)
 
         # Level editor loading and check
-        self.level_editor_on = True
+        self.level_editor_on = False
         self.level_editor = LevelEditor(self, self.assets)
 
     def run_game(self) -> None:

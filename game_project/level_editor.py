@@ -30,12 +30,34 @@ class LevelEditor:
 
     def input(self):
         for event in pygame.event.get():
+            print(event)  # For debugging
             if event == pygame.QUIT:
                 self.main.run = False
             elif event == pygame.KEYDOWN:
+                print(f"LEVEL EDITOR CLASS - KEY PRESSED: {event.key}")  # For debugging
                 if event.key == pygame.K_ESCAPE:
                     self.main.run = False
-
+                # Moving right
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    self.icon_rect.x += gs.IMAGE_SIZE
+                    if self.icon_rect.x >= gs.SCREEN_BORDER_RIGHT:
+                        self.icon_rect.x = gs.SCREEN_BORDER_RIGHT - gs.IMAGE_SIZE
+                # Moving left
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    self.icon_rect.x -= gs.IMAGE_SIZE
+                    if self.icon_rect.x <= gs.SCREEN_BORDER_LEFT:
+                        self.icon_rect.x = gs.SCREEN_BORDER_LEFT
+                # Moving up
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    self.icon_rect.y -= gs.IMAGE_SIZE
+                    if self.icon_rect.y <= gs.SCREEN_BORDER_TOP:
+                        self.icon_rect.y = gs.SCREEN_BORDER_TOP
+                # Moving down
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    self.icon_rect.y += gs.IMAGE_SIZE
+                    if self.icon_rect.y >= gs.SCREEN_BORDER_BOTTOM:
+                        self.icon_rect.y = gs.SCREEN_BORDER_BOTTOM - gs.IMAGE_SIZE
+                
     def update(self):
         pass
 
