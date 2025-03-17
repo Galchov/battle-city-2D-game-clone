@@ -62,7 +62,7 @@ class Tank(pygame.sprite.Sprite):
         # Tank image mask dictionary
         self.mask_dict = self.get_various_masks()
         self.mask = self.mask_dict[self.direction]
-        self.mask_image = self.mask.to_surface()
+        # self.mask_image = self.mask.to_surface()
         self.mask_direction = self.direction
 
     def input(self) -> None:
@@ -94,7 +94,7 @@ class Tank(pygame.sprite.Sprite):
         # If the tank is set to active, draw it on the screen
         if self.active:
             window.blit(self.image, self.rect)
-            window.blit(self.mask_image, self.rect)
+            # window.blit(self.mask_image, self.rect)
             pygame.draw.rect(window, gs.RED, self.rect, 1)
 
     def move_tank(self, direction) -> None:

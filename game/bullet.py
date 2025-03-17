@@ -27,7 +27,7 @@ class Bullet(pygame.sprite.Sprite):
 
         # Bullet mask
         self.mask = pygame.mask.from_surface(self.image)
-        self.mask_image = self.mask.to_surface()
+        # self.mask_image = self.mask.to_surface()
 
         # Add bullet to the bullets group
         self.bullet_group.add(self)
@@ -40,7 +40,7 @@ class Bullet(pygame.sprite.Sprite):
 
     def draw(self, window):
         window.blit(self.image, self.rect)
-        window.blit(self.mask_image, self.rect)
+        # window.blit(self.mask_image, self.rect)
         pygame.draw.rect(window, gs.GREEN, self.rect, 1)
         
     def move(self):

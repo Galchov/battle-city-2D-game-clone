@@ -3,6 +3,8 @@ import settings as gs
 
 from game_assets import GameAssets
 from game import Game
+from level_editor import LevelEditor
+
 
 class Main:
 
@@ -24,8 +26,13 @@ class Main:
 
         self.assets = GameAssets()
 
+        # Game object loading and check
         self.game_on = True
         self.game = Game(self, self.assets, True, True)
+
+        # Level editor loading and check
+        self.level_editor_on = True
+        self.level_editor = LevelEditor(self, self.assets)
 
     def run_game(self) -> None:
         """Main Game While Loop"""
@@ -41,10 +48,15 @@ class Main:
         if self.game_on:
             self.game.input()
 
+        # Input controls for when level editor is runnig
+        if self.level_editor_on:
+            self.level_editor.input()
+
         # Main game controls
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.run = False
+        if not self.game_on and not self.level_editor_on:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.run = False
 
     def update(self) -> None:
         """Update the game and all objects"""
@@ -54,6 +66,10 @@ class Main:
         # If game is on, update game
         if self.game_on:
             self.game.update()
+        
+        # If level editor is on, update level editor
+        if self.level_editor_on:
+            self.level_editor.update()
 
     def draw(self) -> None:
         """Handles all game drawings on the screen"""
@@ -63,6 +79,10 @@ class Main:
         # If game is runnig, draw the screen
         if self.game_on:
             self.game.draw(self.screen)
+        
+        # If level editor is running, draw to screen
+        if self.level_editor_on:
+            self.level_editor.draw(self.screen)
 
         pygame.display.update()
 
