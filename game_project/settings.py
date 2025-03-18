@@ -109,3 +109,22 @@ NUMS = {
 
 CONTEXT = {"pause":     [(SPRITE_SIZE * 18), (SPRITE_SIZE * 11), 40, 8],
            "game_over": [(SPRITE_SIZE * 18), (SPRITE_SIZE * 11) + 8, 32, 16]}
+
+ENEMY_TANK_SPAWNS = [
+    (0, 0), (0, 1), (1, 0), (1, 1),     # Enemy spawn 1
+    (12, 0), (12, 1), (13, 0), (13, 1), # Enemy spawn 2
+    (24, 0), (24, 1), (25, 0), (25, 1)  # Enemy spawn 3
+]
+
+PLAYER_TANK_SPAWNS = [
+    (8, 24), (8, 25), (9, 24), (9, 25),     # Player 1 spawn
+    (16, 24), (16, 25), (17, 24), (17, 25)  # Player 2 spawn
+]
+
+BASE = [
+    (12, 24), (12, 25), (13, 24), (13, 25)  # Player tank base
+]
+
+FORT = [
+    (11, 25), (11, 24), (11, 23), (12, 23), (13, 23), (14, 23), (14, 24), (14, 25)
+]

@@ -1,6 +1,7 @@
 import pygame
 
 import settings as gs
+from levels import LevelData
 
 
 class LevelEditor:
@@ -10,8 +11,10 @@ class LevelEditor:
         self.assets = assets
         self.active = True
 
-        self.level_data = None
+        self.level_data = LevelData()
         self.all_levels = []
+        for stage in self.level_data.level_data:
+            self.all_levels.append(stage)
 
         self.overlay_screen = self.draw_screen()
         self.matrix = self.generate_level_matrix()
@@ -89,6 +92,13 @@ class LevelEditor:
                     if self.index >= len(self.inserts):
                         self.index = self.index % len(self.inserts)
                     self.insert_tile = self.inserts[self.index]
+
+                # Save level
+                if event.key == pygame.K_RETURN:
+                    self.validate_level()
+                    self.all_levels.append(self.matrix)
+                    self.level_data.save_level_data(self.all_levels)
+                    self.active = False
                 
     def update(self):
         icon_grid_pos_col = (self.icon_rect.left - gs.SCREEN_BORDER_LEFT) // (gs.IMAGE_SIZE // 2)
@@ -147,3 +157,17 @@ class LevelEditor:
             matrix.append(line)
         
         return matrix
+    
+    def validate_level(self):
+        for cell in gs.ENEMY_TANK_SPAWNS:
+            self.matrix[cell[1]][cell[0]] = -1
+        for cell in gs.PLAYER_TANK_SPAWNS:
+            self.matrix[cell[1]][cell[0]] = -1
+        for cell in gs.BASE:
+            self.matrix[cell[1]][cell[0]] = -1
+        
+        self.matrix[24][12] = 999
+
+        for cell in gs.FORT:
+            if self.matrix[cell[1]][cell[0]] == -1:
+                self.matrix[cell[1]][cell[0]] = 432
