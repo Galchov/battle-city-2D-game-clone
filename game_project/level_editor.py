@@ -30,11 +30,9 @@ class LevelEditor:
 
     def input(self):
         for event in pygame.event.get():
-            print(event)  # For debugging
-            if event == pygame.QUIT:
+            if event.type == pygame.QUIT:
                 self.main.run = False
-            elif event == pygame.KEYDOWN:
-                print(f"LEVEL EDITOR CLASS - KEY PRESSED: {event.key}")  # For debugging
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.main.run = False
                 # Moving right

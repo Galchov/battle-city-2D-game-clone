@@ -30,11 +30,11 @@ class Main:
         self.assets = GameAssets()
 
         # Game object loading and check
-        self.game_on = True
+        self.game_on = False
         self.game = Game(self, self.assets, True, True)
 
         # Level editor loading and check
-        self.level_editor_on = False
+        self.level_editor_on = True
         self.level_editor = LevelEditor(self, self.assets)
 
     def run_game(self) -> None:
