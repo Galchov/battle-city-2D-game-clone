@@ -22,8 +22,35 @@ class LevelEditor:
             483: self.assets.forest_tiles["small"],
             484: self.assets.ice_tiles["small"],
             533: self.assets.water_tiles["small_1"],
-            999: self.assets.flag["Phoenix_Alive"]
+            999: self.assets.flag["Phoenix_Alive"],
         }
+
+        self.inserts = [
+            # Empty square
+            [-1, -1, -1, -1],
+
+            # Brick tiles
+            [-1, 432, -1, 432],     # Right vertical brick
+            [-1, -1, 432, 432],     # Bottom row brick
+            [432, -1, 432, -1],     # Left vertical brick
+            [432, 432, -1, -1],     # Top row brick
+            [432, 432, 432, 432],   # Full brick
+
+            # Steel tiles
+            [-1, 482, -1, 482],     # Steel tile right vertical
+            [-1, -1, 482, 482],     # Steel tile bottom row
+            [482, -1, 482, -1],     # Steel tile left vertical
+            [482, 482, -1, -1],     # Steel tile top row
+            [482, 482, 482, 482],   # Steel tile full
+
+            # Other tiles - Full blocks
+            [483, 483, 483, 483],   # Forest tile
+            [484, 484, 484, 484],   # Ice tile
+            [533, 533, 533, 533],   # Water tile
+        ]
+
+        self.index = 0
+        self.insert_tile = self.inserts[self.index]
         
         self.icon_image = self.assets.tank_images["Tank_4"]["Gold"]["Up"][0]
         self.icon_rect = self.icon_image.get_rect(topleft=(gs.SCREEN_BORDER_LEFT, gs.SCREEN_BORDER_TOP))
@@ -56,12 +83,33 @@ class LevelEditor:
                     if self.icon_rect.y >= gs.SCREEN_BORDER_BOTTOM:
                         self.icon_rect.y = gs.SCREEN_BORDER_BOTTOM - gs.IMAGE_SIZE
                 
+                # Cycle through insert pieces
+                if event.key == pygame.K_SPACE:
+                    self.index += 1
+                    if self.index >= len(self.inserts):
+                        self.index = self.index % len(self.inserts)
+                    self.insert_tile = self.inserts[self.index]
+                
     def update(self):
-        pass
+        icon_grid_pos_col = (self.icon_rect.left - gs.SCREEN_BORDER_LEFT) // (gs.IMAGE_SIZE // 2)
+        icon_grid_pos_row = (self.icon_rect.top - gs.SCREEN_BORDER_TOP) // (gs.IMAGE_SIZE // 2)
+
+        self.matrix[icon_grid_pos_row][icon_grid_pos_col] = self.insert_tile[0]
+        self.matrix[icon_grid_pos_row][icon_grid_pos_col + 1] = self.insert_tile[1]
+        self.matrix[icon_grid_pos_row + 1][icon_grid_pos_col] = self.insert_tile[2]
+        self.matrix[icon_grid_pos_row + 1][icon_grid_pos_col + 1] = self.insert_tile[3]
 
     def draw(self, window):
         window.blit(self.overlay_screen, (0, 0))
         self.draw_grid_to_screen(window)
+
+        for i, row in enumerate(self.matrix):
+            for j, tile in enumerate(row):
+                if tile == -1:
+                    continue
+                else:
+                    window.blit(self.tile_type[tile], (gs.SCREEN_BORDER_LEFT + (j * gs.IMAGE_SIZE // 2),
+                                                       gs.SCREEN_BORDER_TOP + (i * gs.IMAGE_SIZE // 2)))
 
         window.blit(self.icon_image, self.icon_rect)
         pygame.draw.rect(window, gs.GREEN, self.icon_rect, 1)

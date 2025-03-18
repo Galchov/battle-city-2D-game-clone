@@ -6,7 +6,7 @@ from game import Game
 from level_editor import LevelEditor
 
 
-# TODO: Level Editor input to be debugged and completed
+# TODO: Sprites tranparency to be achieved
 
 
 class Main:
