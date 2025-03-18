@@ -6,9 +6,6 @@ from game import Game
 from level_editor import LevelEditor
 
 
-# TODO: Sprites tranparency to be achieved
-
-
 class Main:
 
     def __init__(self) -> None:

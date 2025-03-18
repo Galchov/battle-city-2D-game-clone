@@ -25,7 +25,7 @@ FPS = 60
 
 # Colour definitions
 GREY = (99, 99, 99)
-BLACK = (0, 0, 0)
+BLACK = (0, 0, 1)   # Warning: This is the correct colour from the spritesheet, but it might cause isses in future!
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 
