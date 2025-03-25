@@ -4,6 +4,7 @@ import settings as gs
 from game_assets import GameAssets
 from game import Game
 from level_editor import LevelEditor
+from levels import LevelData
 
 
 class Main:
@@ -25,6 +26,7 @@ class Main:
         self.run = True
 
         self.assets = GameAssets()
+        self.levels = LevelData()
 
         # Game object loading and check
         self.game_on = False
