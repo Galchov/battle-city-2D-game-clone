@@ -17,7 +17,18 @@ class StartScreen:
         self.rect = self.image.get_rect(topleft=(0, 0))
         self.x, self.y = self.rect.topleft
 
-        self.start_screen_active = False
+        # Options positions
+        self.option_positions = [
+            (4 * gs.IMAGE_SIZE, 7.75 * gs.IMAGE_SIZE),
+            (4 * gs.IMAGE_SIZE, 8.75 * gs.IMAGE_SIZE),
+            (4 * gs.IMAGE_SIZE, 9.75 * gs.IMAGE_SIZE),
+        ]
+        
+        self.token_index = 0
+        self.token_image = self.assets.start_screen_token
+        self.token_rect = self.token_image.get_rect(topleft=self.option_positions[self.token_index])
+
+        self.start_screen_active = True
 
     def input(self):
         for event in pygame.event.get():
@@ -29,6 +40,14 @@ class StartScreen:
                 if event.key == pygame.K_ESCAPE:
                     self.main.run = False
                     return False
+                
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                    self._choose_options_main_menu(-1)
+                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    self._choose_options_main_menu(1)
+
+                if event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
+                    self._selection_option_action()
         
         return True
     
@@ -37,3 +56,21 @@ class StartScreen:
 
     def draw(self, window):
         window.blit(self.image, self.rect)
+
+        if self.start_screen_active:
+            window.blit(self.token_image, self.token_rect)
+
+    def _choose_options_main_menu(self, num):
+        """Update the token's position to the chosen option"""
+
+        self.token_index += num
+        self.token_index = self.token_index % len(self.option_positions)
+        self.token_rect.topleft = self.option_positions[self.token_index]
+
+    def _selection_option_action(self):
+        if self.token_index == 0:
+            print("Start a new game with just 1 player")
+        elif self.token_index == 1:
+            print("Start a new game with 2 players")
+        elif self.token_index == 2:
+            print("Start a construction mode")
