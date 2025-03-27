@@ -105,6 +105,12 @@ class Main:
 
         pygame.display.update()
 
+    def start_new_game(self, player_1, player_2):
+        pass
+
+    def start_level_creator(self):
+        pass
+
 
 if __name__ == "__main__":
     battle_city = Main()
