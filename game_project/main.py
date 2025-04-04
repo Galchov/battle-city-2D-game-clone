@@ -35,11 +35,11 @@ class Main:
 
         # Game object loading and check
         self.game_on = False
-        self.game = Game(self, self.assets, True, True)
+        self.game = None
 
         # Level editor loading and check
         self.level_editor_on = False
-        self.level_editor = LevelEditor(self, self.assets)
+        self.level_editor = None
 
     def run_game(self) -> None:
         """Main Game While Loop"""
@@ -81,10 +81,26 @@ class Main:
         # If game is on, update game
         if self.game_on:
             self.game.update()
+
+        if self.game:
+            if self.game.end_game == True:
+                self.start_screen = StartScreen(self, self.assets)
+                self.start_screen_active = True
+
+                self.game_on = False
+                self.game = None
         
         # If level editor is on, update level editor
         if self.level_editor_on:
             self.level_editor.update()
+
+        if self.level_editor:
+            if self.level_editor.active == False:
+                self.start_screen = StartScreen(self, self.assets)
+                self.start_screen_active = True
+
+                self.level_editor_on = False
+                self.level_editor = None
 
     def draw(self) -> None:
         """Handles all game drawings on the screen"""
@@ -106,10 +122,15 @@ class Main:
         pygame.display.update()
 
     def start_new_game(self, player_1, player_2):
-        pass
+        self.game_on = True
+        self.game = Game(self, self.assets, player_1, player_2)
+        self.start_screen_active = False
+        return
 
     def start_level_creator(self):
-        pass
+        self.level_editor_on = True
+        self.level_editor = LevelEditor(self, self.assets)
+        self.start_screen_active = False
 
 
 if __name__ == "__main__":
