@@ -1,5 +1,6 @@
 import pygame
 import settings as gs
+import random
 
 from characters import Tank
 from player_tank import PlayerTank
@@ -22,6 +23,7 @@ class Game:
 
         # Level information
         self.level_num = 1
+        self.data = self.main.levels
 
         # Player attributes
         self.player_1_active = player_1
@@ -29,12 +31,15 @@ class Game:
 
         # Player objects
         if self.player_1_active:
-            self.player_1 = PlayerTank(self, self.assets, self.groups, (400, 400), "Up", "Gold", 0)
+            self.player_1 = PlayerTank(self, self.assets, self.groups, gs.PLAYER_1_POS, "Up", "Gold", 0)
         if self.player_2_active:
-            self.player_2 = PlayerTank(self, self.assets, self.groups, (600, 400), "Up", "Green", 1)
+            self.player_2 = PlayerTank(self, self.assets, self.groups, gs.PLAYER_2_POS, "Up", "Green", 1)
 
         # Number of Enemy Tanks
         self.enemies = 20
+
+        # Load the stage
+        self.create_new_stage()
 
         # Game over
         self.end_game = False
@@ -85,3 +90,67 @@ class Game:
         for key in self.groups.keys():
             for item in self.groups[key]:
                 item.draw(window)
+
+    def create_new_stage(self):
+        # Retrieves the specific level data
+        self.current_level_data = self.data.level_data[self.level_num - 1]
+
+        # Number of enemy tanks to spawn in the stage, tracked down to Zero
+        # self.enemies = random.choice([16, 17, 18, 19, 20])
+        self.enemies = 5
+
+        # Track the number of killed enemies, tracked down to Zero
+        self.enemies_killed = self.enemies
+
+        # Load in the level data
+        self.load_level_data(self.current_level_data)
+
+        # Generate the spawn queue for the AI tanks
+        self.generate_spawn_queue()
+        self.spawn_pos_index = 0
+        self.spawn_queue_index = 0
+
+        if self.player_1_active:
+            self.player_1.new_stage_spawn(gs.PLAYER_1_POS)
+
+    def load_level_data(self, level):
+        """Load the level data"""
+
+        self.grid = []
+
+        for i, row in enumerate(level):
+            line = []
+            for j, tile in enumerate(row):
+                pos = (gs.SCREEN_BORDER_LEFT + (j * gs.IMAGE_SIZE // 2), 
+                       gs.SCREEN_BORDER_TOP + (i * gs.IMAGE_SIZE // 2))
+                if int(tile) < 0:
+                    line.append("   ")
+                elif int(tile) == 432:
+                    line.append(f"{tile}")
+                elif int(tile) == 482:
+                    line.append(f"{tile}")
+                elif int(tile) == 483:
+                    line.append(f"{tile}")
+                elif int(tile) == 484:
+                    line.append(f"{tile}")
+                elif int(tile) == 533:
+                    line.append(f"{tile}")
+                else:
+                    line.append(f"{tile}")
+                
+            self.grid.append(line)
+        
+        for row in self.grid:
+            print(row)
+
+    def generate_spawn_queue(self):
+        """Generates a list of tanks that will be spawning during the level"""
+
+        self.spawn_queue_ratios = gs.TANK_SPAWN_QUEUE[f"queue_{str((self.level_num - 1 % 36) // 3)}"]
+        self.spawn_queue = []
+
+        for lvl, ratio in enumerate(self.spawn_queue_ratios):
+            for i in range(int(round(self.enemies * (ratio / 100)))):
+                self.spawn_queue.append(f"level_{lvl}")
+        
+        random.shuffle(self.spawn_queue)
