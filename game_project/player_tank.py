@@ -6,7 +6,8 @@ from characters import Tank
 class PlayerTank(Tank):
 
     def __init__(self, game, assets, groups, position, direction, color, tank_level) -> None:
-        super().__init__(game, assets, groups, position, direction, color, tank_level, False)
+        super().__init__(game, assets, groups, position, direction, False, color, tank_level)
+        self.player_group.add(self)
         self.lives = 3
 
     def input(self, keypressed) -> None:
@@ -33,5 +34,6 @@ class PlayerTank(Tank):
                 self.move_tank("Right")
     
     def new_stage_spawn(self, spawn_pos):
+        self.tank_group.add(self)
         self.x_pos, self.y_pos = spawn_pos
         self.rect.topleft = (self.x_pos, self.y_pos)

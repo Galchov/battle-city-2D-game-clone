@@ -15,8 +15,11 @@ class Game:
         self.assets = assets
 
         # Objects groups
-        self.groups = {"All_Tanks": pygame.sprite.Group(),
-                       "Bullets": pygame.sprite.Group()}
+        self.groups = {
+            "Player_Tanks": pygame.sprite.Group(),
+            "All_Tanks": pygame.sprite.Group(), 
+            "Bullets": pygame.sprite.Group(),
+            }
 
         # Game HUD
         self.hud = GameHud(self, self.assets)
@@ -37,6 +40,8 @@ class Game:
 
         # Number of Enemy Tanks
         self.enemies = 20
+        self.enemy_tank_spawn_timer = gs.TANK_SPAWNING_TIME
+        self.enemy_spawn_postitions = [gs.AI_TANK_1_POS, gs.AI_TANK_2_POS, gs.AI_TANK_3_POS]
 
         # Load the stage
         self.create_new_stage()
@@ -77,8 +82,12 @@ class Game:
 
         self.hud.update()
         for key in self.groups.keys():
+            if key == "Player_Tanks":
+                continue
             for item in self.groups[key]:
                 item.update()
+        
+        self.spawn_enemy_tanks()
 
     def draw(self, window) -> None:
         """Drawing to the screen"""
@@ -92,6 +101,12 @@ class Game:
                 item.draw(window)
 
     def create_new_stage(self):
+        # Reset the various sprite groups to Zero
+        for key, value in self.groups.items():
+            if key == "Player_Tanks":
+                continue
+            value.empty()
+
         # Retrieves the specific level data
         self.current_level_data = self.data.level_data[self.level_num - 1]
 
@@ -109,9 +124,12 @@ class Game:
         self.generate_spawn_queue()
         self.spawn_pos_index = 0
         self.spawn_queue_index = 0
+        print(self.spawn_queue)
 
         if self.player_1_active:
             self.player_1.new_stage_spawn(gs.PLAYER_1_POS)
+        if self.player_2_active:
+            self.player_2.new_stage_spawn(gs.PLAYER_2_POS)
 
     def load_level_data(self, level):
         """Load the level data"""
@@ -140,8 +158,8 @@ class Game:
                 
             self.grid.append(line)
         
-        for row in self.grid:
-            print(row)
+        # for row in self.grid:
+        #     print(row)
 
     def generate_spawn_queue(self):
         """Generates a list of tanks that will be spawning during the level"""
@@ -154,3 +172,20 @@ class Game:
                 self.spawn_queue.append(f"level_{lvl}")
         
         random.shuffle(self.spawn_queue)
+
+    def spawn_enemy_tanks(self):
+        """Spawn enemy tanks, as each one spawns as per the queue"""
+
+        if self.enemies == 0:
+            return
+        
+        if pygame.time.get_ticks() - self.enemy_tank_spawn_timer >= gs.TANK_SPAWNING_TIME:
+            position = self.enemy_spawn_postitions[self.spawn_pos_index % 3]
+            tank_level = gs.TANK_CRITERIA[self.spawn_queue[self.spawn_queue_index % len(self.spawn_queue)]]["image"]
+            Tank(self, self.assets, self.groups, position, "Down", True, "Silver", tank_level)
+
+            # Reset enemy tank spawn timer
+            self.enemy_tank_spawn_timer = pygame.time.get_ticks()
+            self.spawn_pos_index += 1
+            self.spawn_queue_index += 1
+            self.enemies -= 1

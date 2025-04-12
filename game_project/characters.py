@@ -6,7 +6,7 @@ from bullet import Bullet
 
 class Tank(pygame.sprite.Sprite):
     
-    def __init__(self, game, assets, groups, position, direction, color="Silver", tank_level=0, enemy=True) -> None:
+    def __init__(self, game, assets, groups, position, direction, enemy=True, color="Silver", tank_level=0) -> None:
         super().__init__()
         # Game objects and assets
         self.game = game
@@ -15,6 +15,7 @@ class Tank(pygame.sprite.Sprite):
 
         # Sprite groups that may interact with self
         self.tank_group = self.groups["All_Tanks"]
+        self.player_group = self.groups["Player_Tanks"]
 
         # Add tank object to sprite group
         self.tank_group.add(self)
