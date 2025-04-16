@@ -5,6 +5,7 @@ import random
 from characters import Tank
 from player_tank import PlayerTank
 from game_hud import GameHud
+from tile import BrickTile
 
 
 class Game:
@@ -19,6 +20,7 @@ class Game:
             "Player_Tanks": pygame.sprite.Group(),
             "All_Tanks": pygame.sprite.Group(), 
             "Bullets": pygame.sprite.Group(),
+            "Destructable_Tiles": pygame.sprite.Group(),
             }
 
         # Game HUD
@@ -145,6 +147,7 @@ class Game:
                     line.append("   ")
                 elif int(tile) == 432:
                     line.append(f"{tile}")
+                    map_tile = BrickTile(pos, self.groups["Destructable_Tiles"], self.assets.brick_tiles)
                 elif int(tile) == 482:
                     line.append(f"{tile}")
                 elif int(tile) == 483:
