@@ -21,6 +21,7 @@ class Game:
             "All_Tanks": pygame.sprite.Group(), 
             "Bullets": pygame.sprite.Group(),
             "Destructable_Tiles": pygame.sprite.Group(),
+            "Impassable_Tiles": pygame.sprite.Group(),
             }
 
         # Game HUD
@@ -148,6 +149,7 @@ class Game:
                 elif int(tile) == 432:
                     line.append(f"{tile}")
                     map_tile = BrickTile(pos, self.groups["Destructable_Tiles"], self.assets.brick_tiles)
+                    self.groups["Impassable_Tiles"].add(map_tile)
                 elif int(tile) == 482:
                     line.append(f"{tile}")
                 elif int(tile) == 483:
