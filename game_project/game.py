@@ -6,6 +6,7 @@ from characters import Tank
 from player_tank import PlayerTank
 from game_hud import GameHud
 from tile import BrickTile, SteelTile, ForestTile, IceTile, WaterTile
+from fade_animation import Fade
 
 
 class Game:
@@ -34,6 +35,9 @@ class Game:
         self.level_num = 1
         self.data = self.main.levels
 
+        # Level fading
+        self.fade = Fade(self, self.assets, 10)
+
         # Player attributes
         self.player_1_active = player_1
         self.player_2_active = player_2
@@ -54,6 +58,7 @@ class Game:
 
         # Game over
         self.end_game = False
+        self.game_on = False
 
     def input(self) -> None:
         """Handle the game inputs while running"""
@@ -87,6 +92,14 @@ class Game:
     def update(self) -> None:
 
         self.hud.update()
+
+        if self.fade.fade_active:
+            self.fade.update()
+            if not self.fade.fade_active:
+                for tank in self.groups["All_Tanks"]:
+                    tank.spawn_timer = pygame.time.get_ticks()
+            return
+
         for key in self.groups.keys():
             if key == "Player_Tanks":
                 continue
@@ -105,8 +118,13 @@ class Game:
         for key in self.groups.keys():
             if key == "Impassable_Tiles":
                 continue
+            if self.fade.fade_active and (key == "All_Tanks" or key == "Player_Tanks"):
+                continue
             for item in self.groups[key]:
                 item.draw(window)
+
+        if self.fade.fade_active:
+            self.fade.draw(window)
 
     def create_new_stage(self):
         # Reset the various sprite groups to Zero
@@ -127,6 +145,10 @@ class Game:
 
         # Load in the level data
         self.load_level_data(self.current_level_data)
+
+        self.fade.level = self.level_num
+        self.fade.stage_image = self.fade.create_stage_image()
+        self.fade.fade_active = True
 
         # Generate the spawn queue for the AI tanks
         self.generate_spawn_queue()
